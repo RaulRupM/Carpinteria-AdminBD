@@ -19,3 +19,18 @@ D:\Cesar Medellin\Desktop\AD_BD\Carpinteria_SQLServer\Carpinteria_SQLServer\Carp
 D:\Cesar Medellin\Desktop\AD_BD\Carpinteria_SQLServer\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.CoreCompileInputs.cache
 D:\Cesar Medellin\Desktop\AD_BD\Carpinteria_SQLServer\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.exe
 D:\Cesar Medellin\Desktop\AD_BD\Carpinteria_SQLServer\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.pdb
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.exe.config
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.exe
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.pdb
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.AssemblyReference.cache
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.SuggestedBindingRedirects.cache
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Cliente.resources
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Insumo.resources
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Proveedor.resources
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Empleado.resources
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Properties.Resources.resources
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.GenerateResource.cache
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.CoreCompileInputs.cache
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.exe
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.pdb
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Herramienta.resources
