@@ -183,6 +183,7 @@ namespace Carpinteria_SQLServer
             textBox4.Text = dataGridView1.CurrentRow.Cells[5].Value.ToString();
             textBox5.Text = dataGridView1.CurrentRow.Cells[8].Value.ToString();
             dateTimePicker1.Text = dataGridView1.CurrentRow.Cells[6].Value.ToString();
+            textBox6.Text = dataGridView1.CurrentRow.Cells[7].Value.ToString();
             dateTimePicker1.Enabled = true;
             textBox6.Enabled = true;
         }
