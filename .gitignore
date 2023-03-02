@@ -6,7 +6,7 @@
 /Carpinteria_SQLServer/Carpinteria_SQLServer/obj/
 /Carpinteria_SQLServer/Carpinteria_SQLServer/properties/
 .*suo
- Carpinteria_SQLServer/.vs/
+.vs/
  [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -66,8 +66,7 @@ _ReSharper*/
 # Visual Studio cache files
 # files ending in .cache can be ignored
 *.[Cc]ache
-# but keep track of directories ending in .cache
-!?*.[Cc]ache/
+*.[Vv]sidx
 
 # Others
 ClientBin/
@@ -79,3 +78,5 @@ ClientBin/
 *.pfx
 *.publishsettings
 orleans.codegen.cs
+/.vs/*.sqlite
+/.vs/slnx.sqlite
