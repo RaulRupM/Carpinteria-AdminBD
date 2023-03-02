@@ -52,6 +52,19 @@
     <Compile Include="Cliente.Designer.cs">
       <DependentUpon>Cliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventosForms.cs" />
+    <Compile Include="Herramienta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Herramienta.Designer.cs">
+      <DependentUpon>Herramienta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Insumo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Insumo.Designer.cs">
+      <DependentUpon>Insumo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Proveedor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +81,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Cliente.resx">
       <DependentUpon>Cliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Herramienta.resx">
+      <DependentUpon>Herramienta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Insumo.resx">
+      <DependentUpon>Insumo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Proveedor.resx">
       <DependentUpon>Proveedor.cs</DependentUpon>
