@@ -89,7 +89,7 @@ namespace Carpinteria_SQLServer
                 comando.ExecuteNonQuery();
                 conexion.Close();
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex) { throw new Exception(ex.Message + 1); }
         }
 		private void btnModificaInsumo_Click(object sender, EventArgs e)
 		{

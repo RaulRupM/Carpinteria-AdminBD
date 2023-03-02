@@ -1,9 +1,8 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
-/Carpinteria_SQLServer/Carpinteria_SQLServer/bin/
-/Carpinteria_SQLServer/Carpinteria_SQLServer/obj/
+Carpinteria_SQLServer/bin/
+Carpinteria_SQLServer/obj/
 /Carpinteria_SQLServer/Carpinteria_SQLServer/properties/
 .*suo
 .vs/
@@ -80,3 +79,5 @@ ClientBin/
 orleans.codegen.cs
 /.vs/*.sqlite
 /.vs/slnx.sqlite
+bin/
+obj/
