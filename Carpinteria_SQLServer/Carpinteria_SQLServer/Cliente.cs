@@ -14,8 +14,8 @@ namespace Carpinteria_SQLServer
     public partial class Cliente : Form
     {
 
-        SqlConnection conexion = new SqlConnection("Server=DESKTOP-P986TH4\\SQLEXPRESS;" + "Database=Carpinteria;" + "Integrated Security=true;");
-        string fecha;
+		SqlConnection conexion = new SqlConnection($"Server=FNTSMN3\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
+		string fecha;
         public Cliente()
         {
             InitializeComponent();

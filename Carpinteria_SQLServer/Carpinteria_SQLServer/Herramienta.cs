@@ -49,7 +49,11 @@ namespace Carpinteria_SQLServer
 				conexion.Close();
 				muestraDatosTabla();
 				EventosForms.limpiaTextbox(this);
-			}catch(Exception ex) { throw new Exception(ex.Message) ; }
+			}catch(Exception ex)
+			{
+				conexion.Close();
+				MessageBox.Show("Error al modificar: el nombre ya existe");
+			}
 		}
 
 		private void btnModificarHerramienta_Click(object sender, EventArgs e)
@@ -66,7 +70,11 @@ namespace Carpinteria_SQLServer
 				EventosForms.limpiaTextbox(this);
 				conexion.Close();
 				muestraDatosTabla();
-			}catch(Exception ex) { throw new Exception(ex.Message); }
+			}catch(Exception ex)
+			{
+				conexion.Close();
+				MessageBox.Show("Error al modificar: el nombre ya existe");
+			}
 		}
 
 		private void btnEliminarHerramienta_Click(object sender, EventArgs e)
@@ -82,7 +90,10 @@ namespace Carpinteria_SQLServer
 				EventosForms.limpiaTextbox(this);
 				conexion.Close();
 				muestraDatosTabla();
-			}catch (Exception ex) { throw new Exception(ex.Message); }
+			}catch (Exception ex) { 
+				conexion.Close();
+				throw new Exception(ex.Message); 
+			}
 		}
 	}
 }

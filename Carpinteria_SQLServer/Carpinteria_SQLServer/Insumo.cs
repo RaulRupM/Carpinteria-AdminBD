@@ -54,7 +54,7 @@ namespace Carpinteria_SQLServer
                 comando.ExecuteNonQuery();
                 conexion.Close();
                 muestraDatosTabla();
-			}catch(Exception ex) { throw new Exception(ex.Message); }
+			}catch(Exception ex) { throw new Exception(ex.Message);}
         }
 
         private void modificaInsumo(int id)

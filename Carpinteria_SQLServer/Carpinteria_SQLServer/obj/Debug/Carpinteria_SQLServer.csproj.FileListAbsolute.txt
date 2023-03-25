@@ -49,3 +49,5 @@ D:\Cesar Medellin\Desktop\AD_BD\Carpinteria_SQLServer\git\Carpinteria-AdminBD\Ca
 D:\Cesar Medellin\Desktop\AD_BD\Carpinteria_SQLServer\git\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.CoreCompileInputs.cache
 D:\Cesar Medellin\Desktop\AD_BD\Carpinteria_SQLServer\git\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.exe
 D:\Cesar Medellin\Desktop\AD_BD\Carpinteria_SQLServer\git\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.pdb
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.InsumosProyecto.resources
+C:\Users\RupertR\Documents\Personal\materias\AdminBD\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Orden.resources

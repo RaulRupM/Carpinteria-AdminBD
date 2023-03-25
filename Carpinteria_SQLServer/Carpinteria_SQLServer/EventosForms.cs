@@ -33,7 +33,7 @@ namespace Carpinteria_SQLServer
 		{
 			foreach (Control control in pantalla.Controls)
 			{
-				if (control is TextBox)
+				if (control is TextBox && control.Enabled)
 				{
 					comando.Parameters.Add(new SqlParameter(control.Tag.ToString(), control.Text));
 				}

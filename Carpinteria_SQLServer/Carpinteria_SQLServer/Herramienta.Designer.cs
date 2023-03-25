@@ -46,7 +46,7 @@
 			// btnEliminarHerramienta
 			// 
 			this.btnEliminarHerramienta.Location = new System.Drawing.Point(492, 103);
-			this.btnEliminarHerramienta.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btnEliminarHerramienta.Margin = new System.Windows.Forms.Padding(2);
 			this.btnEliminarHerramienta.Name = "btnEliminarHerramienta";
 			this.btnEliminarHerramienta.Size = new System.Drawing.Size(74, 33);
 			this.btnEliminarHerramienta.TabIndex = 33;
@@ -57,7 +57,7 @@
 			// btnModificarHerramienta
 			// 
 			this.btnModificarHerramienta.Location = new System.Drawing.Point(413, 103);
-			this.btnModificarHerramienta.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btnModificarHerramienta.Margin = new System.Windows.Forms.Padding(2);
 			this.btnModificarHerramienta.Name = "btnModificarHerramienta";
 			this.btnModificarHerramienta.Size = new System.Drawing.Size(74, 33);
 			this.btnModificarHerramienta.TabIndex = 32;
@@ -68,7 +68,7 @@
 			// btnInsertarHerramienta
 			// 
 			this.btnInsertarHerramienta.Location = new System.Drawing.Point(334, 103);
-			this.btnInsertarHerramienta.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btnInsertarHerramienta.Margin = new System.Windows.Forms.Padding(2);
 			this.btnInsertarHerramienta.Name = "btnInsertarHerramienta";
 			this.btnInsertarHerramienta.Size = new System.Drawing.Size(74, 33);
 			this.btnInsertarHerramienta.TabIndex = 31;
@@ -80,7 +80,7 @@
 			// 
 			this.tablaHerramientas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.tablaHerramientas.Location = new System.Drawing.Point(10, 141);
-			this.tablaHerramientas.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.tablaHerramientas.Margin = new System.Windows.Forms.Padding(2);
 			this.tablaHerramientas.Name = "tablaHerramientas";
 			this.tablaHerramientas.RowHeadersWidth = 51;
 			this.tablaHerramientas.RowTemplate.Height = 24;
@@ -90,7 +90,7 @@
 			// textBox4
 			// 
 			this.textBox4.Location = new System.Drawing.Point(109, 107);
-			this.textBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.textBox4.Margin = new System.Windows.Forms.Padding(2);
 			this.textBox4.Name = "textBox4";
 			this.textBox4.Size = new System.Drawing.Size(108, 20);
 			this.textBox4.TabIndex = 27;
@@ -99,7 +99,7 @@
 			// textBox3
 			// 
 			this.textBox3.Location = new System.Drawing.Point(62, 78);
-			this.textBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.textBox3.Margin = new System.Windows.Forms.Padding(2);
 			this.textBox3.Name = "textBox3";
 			this.textBox3.Size = new System.Drawing.Size(155, 20);
 			this.textBox3.TabIndex = 26;
@@ -108,7 +108,7 @@
 			// textBox2
 			// 
 			this.textBox2.Location = new System.Drawing.Point(62, 47);
-			this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.textBox2.Margin = new System.Windows.Forms.Padding(2);
 			this.textBox2.Name = "textBox2";
 			this.textBox2.Size = new System.Drawing.Size(155, 20);
 			this.textBox2.TabIndex = 25;
@@ -117,7 +117,7 @@
 			// textBox1
 			// 
 			this.textBox1.Location = new System.Drawing.Point(62, 20);
-			this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.textBox1.Margin = new System.Windows.Forms.Padding(2);
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(155, 20);
 			this.textBox1.TabIndex = 24;
@@ -180,9 +180,9 @@
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
-			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.Margin = new System.Windows.Forms.Padding(2);
 			this.Name = "Herramienta";
-			this.Text = "Herramientas";
+			this.Text = "Herramienta";
 			((System.ComponentModel.ISupportInitialize)(this.tablaHerramientas)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
