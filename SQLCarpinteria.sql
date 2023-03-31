@@ -39,6 +39,12 @@ CREATE TABLE Persona.Empleado(
 
 SELECT * FROM Persona.Empleado 
 SELECT * FROM Persona.Empleado WHERE tipo_empleado = 'Lider'
+DELETE FROM Proyecto.Prestamo
+
+SELECT e.nombre AS 'id_empleado', h.nombre AS 'id_herramienta', p.fecha_prestamo, p.fecha_devolucion
+                FROM Proyecto.Prestamo p 
+                INNER JOIN Persona.Empleado e ON p.id_empleado = e.idEmpleado 
+                INNER JOIN Proyecto.Herramienta h ON p.id_herramienta = h.idHerramienta
 
 CREATE TABLE Proyecto.Proyecto(
 	idProyecto INT IDENTITY(1,1) NOT NULL,
@@ -56,6 +62,10 @@ CREATE TABLE Proyecto.Proyecto(
 	CONSTRAINT FK_Cliente FOREIGN KEY(idCliente) REFERENCES Persona.Cliente(idCliente)
 )
 
+ALTER TABLE Proyecto.Proyecto
+ALTER COLUMN fecha_entrega VARCHAR(50) NOT NULL;
+
+
 SELECT * FROM Proyecto.Proyecto
 SELECT p.idProyecto,CONCAT(e.nombre,'-',e.antiguedad) AS 'id_emp_supervisor' ,CONCAT(c.nombre,'-',c.correo) AS 'idCliente', p.nombre_proyecto, p.estado, p.fecha_entrega, p.fecha_estimada, p.descuento, p.Total
 FROM Proyecto.Proyecto p 
@@ -72,7 +82,10 @@ CREATE TABLE Proyecto.Herramienta(
 	CONSTRAINT PK_Herramienta PRIMARY KEY(idHerramienta)
 )
 
-SELECT * FROM Proyecto.Herramienta
+SELECT * FROM Proyecto.Herramienta WHERE cantidad_disponible > 0
+DELETE FROM Proyecto.Herramienta
+INSERT INTO Proyecto.Herramienta (nombre,tipo,estado,cantidad_disponible) VALUES ('Nivel de gota','Medir','Nuevo',4)
+UPDATE Proyecto.Herramienta SET cantidad_disponible = 1 WHERE idHerramienta = 7
 
 CREATE TABLE Proyecto.Prestamo(
 	id_empleado INT NOT NULL,
@@ -101,6 +114,18 @@ CREATE TABLE Proyecto.Empleado_Proyecto(
 )
 
 SELECT * FROM Proyecto.Empleado_Proyecto
+
+CREATE TABLE Proyecto.InsumoProyecto(
+	idInsumo INT NOT NULL,
+	idProyecto INT NOT NULL,
+	cantidad INT NOT NULL,
+	subtotal MONEY NOT NULL,
+
+	CONSTRAINT FK_Insumo FOREIGN KEY(idInsumo) REFERENCES Proyecto.Insumo(idInsumo),
+	CONSTRAINT FK_Proyecto2 FOREIGN KEY(idProyecto) REFERENCES Proyecto.Proyecto(idProyecto)
+)
+
+DROP TABLE Proyecto.InsumoProyecto
 
 CREATE TABLE Proyecto.Insumo(
 	idInsumo INT IDENTITY(1,1) NOT NULL,
@@ -183,7 +208,100 @@ CREATE TRIGGER TR_INSERT_EMP ON Proyecto.Proyecto
  AFTER INSERT
  AS
  BEGIN 
- INSERT into Proyecto.Empleado_Proyecto(id_empleado, id_proyecto, actividad, comision)
- Select id_emp_supervisor, idProyecto, 'Supervisar', 1500 from INSERTED
+	INSERT into Proyecto.Empleado_Proyecto(id_empleado, id_proyecto, actividad, comision)
+	Select id_emp_supervisor, idProyecto, 'Supervisar', 1500 from INSERTED
  END 
+
+ --Modificar lider de proyecto 
+CREATE TRIGGER TR_MODIF_LIDER ON Proyecto.Empleado_Proyecto
+
+FOR UPDATE AS
+DECLARE @proyectoId as BIGINT
+DECLARE @empleadoId as INT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @proyectoId = id_proyecto FROM inserted
+		SELECT @empleadoId = id_empleado FROM inserted
+
+		UPDATE Proyecto.Proyecto
+		SET id_emp_supervisor = @empleadoId
+		WHERE idProyecto = @proyectoId
+	END
+END
+
+--Descuento cliente
+CREATE TRIGGER TR_DESC ON Proyecto.Proyecto
+
+FOR INSERT AS
+DECLARE @clienteId as BIGINT
+DECLARE @numPedidos as INT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @clienteId = id_emp_supervisor FROM inserted
+		SELECT @numPedidos = num_pedidos FROM Persona.Cliente
+
+		UPDATE Proyecto.Proyecto
+		SET descuento = 10
+		WHERE idProyecto = @clienteId AND @numPedidos >= 10
+	END
+END
+
+--Suma de proyecto a cliente
+DROP TRIGGER RESTAR_PRODCREATE 
+CREATE TRIGGER TR_SUM_PROYECT ON Proyecto.Proyecto
+
+FOR UPDATE AS
+DECLARE @clienteId as BIGINT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @clienteId = idCliente FROM inserted
+
+
+		UPDATE Persona.Cliente
+		SET num_pedidos = num_pedidos + 1
+		WHERE idCliente = @clienteId
+	END
+END
+
+--Suma de proyecto a empleado
+DROP TRIGGER RESTAR_PRODCREATE 
+CREATE TRIGGER TR_SUM_PROYECT_EMPL ON Proyecto.Empleado_Proyecto
+
+FOR INSERT AS
+DECLARE @empladoId as BIGINT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @empladoId = id_empleado FROM inserted
+
+
+		UPDATE Persona.Empleado
+		SET num_proyectos = num_proyectos + 1
+		WHERE idEmpleado = @empladoId
+	END
+END
+
+--Eliminacion Proyecto
+CREATE TRIGGER TR_DELET_PROYECT ON Proyecto.Proyecto
+
+FOR DELETE AS
+DECLARE @proyectoId as BIGINT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @proyectoId = idProyecto FROM inserted
+
+
+		DELETE Proyecto.Empleado_Proyecto
+		WHERE id_proyecto = @proyectoId
+	END
+END
 
