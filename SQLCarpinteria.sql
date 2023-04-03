@@ -39,7 +39,7 @@ CREATE TABLE Persona.Empleado(
 
 SELECT * FROM Persona.Empleado 
 SELECT * FROM Persona.Empleado WHERE tipo_empleado = 'Lider'
-DELETE FROM Proyecto.Prestamo
+DELETE FROM Proyecto.Empleado_Proyecto
 
 SELECT e.nombre AS 'id_empleado', h.nombre AS 'id_herramienta', p.fecha_prestamo, p.fecha_devolucion
                 FROM Proyecto.Prestamo p 
@@ -145,7 +145,6 @@ CREATE TABLE Empresa.Proveedor(
 
 	CONSTRAINT PK_Proveedor PRIMARY KEY(idProveedor)
 )
-
 
 --Antiguedad de empleado
 CREATE TRIGGER TR_EDAD ON Persona.Empleado
@@ -304,4 +303,53 @@ BEGIN
 		WHERE id_proyecto = @proyectoId
 	END
 END
+
+--Subtotal Insumo_Proyecto
+CREATE TRIGGER TR_SUBTOTAL_INSUMO_PROYECTO 
+ON Proyecto.InsumoProyecto
+AFTER INSERT
+AS
+DECLARE @idInsumo AS INT
+DECLARE @cantidad AS INT
+BEGIN
+	
+	SELECT @idInsumo = idInsumo FROM inserted
+	SELECT @cantidad= cantidad FROM inserted
+	
+	UPDATE Proyecto.InsumoProyecto
+	SET subtotal = (SELECT precio FROM Proyecto.Insumo WHERE idInsumo = @idInsumo) * @cantidad
+	FROM inserted
+	WHERE InsumoProyecto.idInsumo = inserted.idInsumo AND InsumoProyecto.idProyecto = inserted.idProyecto
+		
+END;
+
+--Trigger que actualiza la cantidad disponible de insumos
+CREATE TRIGGER TR_INSUMO_PROYECTO ON Proyecto.InsumoProyecto
+FOR INSERT AS
+	DECLARE @idInsumo AS INT
+	BEGIN
+		IF EXISTS (SELECT * FROM inserted)
+		BEGIN
+			SELECT @idInsumo = idInsumo FROM inserted
+
+			UPDATE Proyecto.Insumo 
+			SET Insumo.cantidad = (Insumo.cantidad - (SELECT cantidad FROM inserted))
+			WHERE Insumo.idInsumo = @idInsumo
+		END
+	END
+GO
+
+--Trigger que actualiza los insumos despues de eliminar un registro en InsumoProyecto
+CREATE TRIGGER TR_CANTIDAD_INSUMO
+ON Proyecto.InsumoProyecto
+AFTER DELETE
+AS
+DECLARE @idInsumo AS INT
+BEGIN
+	
+	SELECT @idInsumo = idInsumo FROM deleted
+	UPDATE Proyecto.Insumo 
+	SET cantidad = cantidad + (SELECT cantidad FROM deleted)
+	WHERE idInsumo = @idInsumo
+END;
 
