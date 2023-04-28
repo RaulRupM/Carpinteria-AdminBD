@@ -14,7 +14,7 @@ namespace Carpinteria_SQLServer
     public partial class Empleado : Form
     {
 
-        SqlConnection conexion = new SqlConnection("Server=DESKTOP-P986TH4\\SQLEXPRESS;" + "Database=Carpinteria;" + "Integrated Security=true;");
+        SqlConnection conexion = new SqlConnection("Server=FNTSMN3\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
         string fecha;
         int antiguedad = 0;
 

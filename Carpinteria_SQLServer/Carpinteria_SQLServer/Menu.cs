@@ -46,5 +46,11 @@ namespace Carpinteria_SQLServer
             Proyecto proyecto = new Proyecto();
             proyecto.Show();
         }
-    }
+
+		private void button6_Click(object sender, EventArgs e)
+		{
+            Proveedor proveedor = new Proveedor();
+            proveedor.Show();
+		}
+	}
 }

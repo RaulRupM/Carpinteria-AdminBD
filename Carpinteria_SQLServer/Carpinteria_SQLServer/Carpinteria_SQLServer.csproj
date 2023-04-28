@@ -71,6 +71,18 @@
     <Compile Include="Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
+    <Compile Include="NuevaOrden.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NuevaOrden.Designer.cs">
+      <DependentUpon>NuevaOrden.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Orden.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Orden.Designer.cs">
+      <DependentUpon>Orden.cs</DependentUpon>
+    </Compile>
     <Compile Include="Proveedor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +138,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NuevaOrden.resx">
+      <DependentUpon>NuevaOrden.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Orden.resx">
+      <DependentUpon>Orden.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Proveedor.resx">
       <DependentUpon>Proveedor.cs</DependentUpon>

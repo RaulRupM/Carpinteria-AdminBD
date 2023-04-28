@@ -13,7 +13,7 @@ namespace Carpinteria_SQLServer
 {
     public partial class Proveedor : Form
     {
-        SqlConnection conexion = new SqlConnection("Server=DESKTOP-P986TH4\\SQLEXPRESS;" + "Database=Carpinteria;" + "Integrated Security=true;");
+        SqlConnection conexion = new SqlConnection("Server=FNTSMN3\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
 
         public Proveedor()
         {
@@ -40,7 +40,7 @@ namespace Carpinteria_SQLServer
 
         public void muestra()
         {
-            string query = string.Concat("SELECT * FROM Empresa.Proveedor");
+            string query = string.Concat("SELECT * FROM Proveedor.Proveedor");
 
             SqlCommand cmd = new SqlCommand(query, conexion);
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -57,7 +57,7 @@ namespace Carpinteria_SQLServer
             try
             {
                 conexion.Open();
-                string consulta = "INSERT INTO Empresa.Proveedor" +
+                string consulta = "INSERT INTO Proveedor.Proveedor" +
                     "(nombre,direccion,telefono,correo)" +
                     " VALUES ('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "','" + textBox4.Text + "')";
                 SqlCommand comd = new SqlCommand(consulta, conexion);
@@ -87,7 +87,7 @@ namespace Carpinteria_SQLServer
             try
             {
                 conexion.Open();
-                string consulta = "DELETE FROM Empresa.Proveedor WHERE idProveedor = " + dataGridView1.CurrentRow.Cells[0].Value;
+                string consulta = "DELETE FROM Proveedor.Proveedor WHERE idProveedor = " + dataGridView1.CurrentRow.Cells[0].Value;
                 SqlCommand comd = new SqlCommand(consulta, conexion);
                 comd.ExecuteNonQuery();
                 conexion.Close();
@@ -115,7 +115,7 @@ namespace Carpinteria_SQLServer
             try
             {
                 conexion.Open();
-                string consulta = "UPDATE Empresa.Proveedor " +
+                string consulta = "UPDATE Proveedor.Proveedor " +
                     "SET nombre = '" + textBox1.Text + "', direccion = '" + textBox2.Text + "', telefono = " + textBox3.Text + ", correo = '" + textBox4.Text + "'" +
                     "WHERE idProveedor = " + dataGridView1.CurrentRow.Cells[0].Value;
                 SqlCommand comd = new SqlCommand(consulta, conexion);

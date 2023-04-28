@@ -14,7 +14,7 @@ namespace Carpinteria_SQLServer
 {
 	public partial class InsumosProyecto : Form
 	{
-		SqlConnection conexion = new SqlConnection($"Server=DESKTOP-P986TH4\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
+		SqlConnection conexion = new SqlConnection("Server=FNTSMN3\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
 		int cantidadActual;
 		int idProyectoActual;
 
@@ -294,5 +294,10 @@ namespace Carpinteria_SQLServer
         {
 
         }
-    }
+
+		private void comboInsumos_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+	}
 }
