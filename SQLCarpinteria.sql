@@ -46,11 +46,24 @@ SELECT e.nombre AS 'id_empleado', h.nombre AS 'id_herramienta', p.fecha_prestamo
                 INNER JOIN Persona.Empleado e ON p.id_empleado = e.idEmpleado 
                 INNER JOIN Proyecto.Herramienta h ON p.id_herramienta = h.idHerramienta
 
+CREATE TABLE Proyecto.Tipo_Proyecto(
+	idTipo_proyecto INT IDENTITY(1,1) NOT NULL,
+	nombre_proyecto INT NOT NULL,
+	precio MONEY NOT NULL,
+
+	CONSTRAINT PK_TIPO_Proyecto PRIMARY KEY(idTipo_proyecto),
+)
+
+ALTER TABLE Proyecto.Tipo_Proyecto
+ADD CONSTRAINT UQ_TIPO_PROYECTO
+UNIQUE (nombre_PROYECTO);
+
 CREATE TABLE Proyecto.Proyecto(
 	idProyecto INT IDENTITY(1,1) NOT NULL,
 	id_emp_supervisor INT NOT NULL,
 	idCliente INT NOT NULL,
-	nombre_proyecto VARCHAR(100) NOT NULL,
+	idTipo_proyecto INT NOT NULL,
+	--nombre_proyecto VARCHAR(100) NOT NULL,
 	estado VARCHAR(100) NOT NULL,
 	fecha_estimada DATE NOT NULL,
 	fecha_entrega DATE NOT NULL,
@@ -59,7 +72,8 @@ CREATE TABLE Proyecto.Proyecto(
 
 	CONSTRAINT PK_Proyecto PRIMARY KEY(idProyecto),
 	CONSTRAINT FK_Emp_Supervisor FOREIGN KEY(id_emp_supervisor) REFERENCES Persona.Empleado(idEmpleado),
-	CONSTRAINT FK_Cliente FOREIGN KEY(idCliente) REFERENCES Persona.Cliente(idCliente)
+	CONSTRAINT FK_Cliente FOREIGN KEY(idCliente) REFERENCES Persona.Cliente(idCliente),
+	CONSTRAINT FK_TIPO_PROYECTO FOREIGN KEY(idTipo_proyecto) REFERENCES Proyecto.Tipo_Proyecto(idTipo_proyecto),
 )
 
 ALTER TABLE Proyecto.Proyecto
@@ -71,6 +85,8 @@ SELECT p.idProyecto,CONCAT(e.nombre,'-',e.antiguedad) AS 'id_emp_supervisor' ,CO
 FROM Proyecto.Proyecto p 
 INNER JOIN Persona.Cliente c ON p.idCliente = c.idCliente
 INNER JOIN Persona.Empleado e ON p.id_emp_supervisor = e.idEmpleado
+
+
 
 CREATE TABLE Proyecto.Herramienta(
 	idHerramienta INT IDENTITY(1,1) NOT NULL,
@@ -115,16 +131,6 @@ CREATE TABLE Proyecto.Empleado_Proyecto(
 
 SELECT * FROM Proyecto.Empleado_Proyecto
 
-CREATE TABLE Proyecto.InsumoProyecto(
-	idInsumo INT NOT NULL,
-	idProyecto INT NOT NULL,
-	cantidad INT NOT NULL,
-	subtotal MONEY NOT NULL,
-
-	CONSTRAINT FK_Insumo FOREIGN KEY(idInsumo) REFERENCES Proyecto.Insumo(idInsumo),
-	CONSTRAINT FK_Proyecto2 FOREIGN KEY(idProyecto) REFERENCES Proyecto.Proyecto(idProyecto)
-)
-
 DROP TABLE Proyecto.InsumoProyecto
 
 CREATE TABLE Proyecto.Insumo(
@@ -134,6 +140,17 @@ CREATE TABLE Proyecto.Insumo(
 	precio MONEY NOT NULL,
 
 	CONSTRAINT PK_Insumo PRIMARY KEY(idInsumo)
+)
+
+
+CREATE TABLE Proyecto.InsumoProyecto(
+	idInsumo INT NOT NULL,
+	idProyecto INT NOT NULL,
+	cantidad INT NOT NULL,
+	subtotal MONEY NOT NULL,
+
+	CONSTRAINT FK_Insumo FOREIGN KEY(idInsumo) REFERENCES Proyecto.Insumo(idInsumo),
+	CONSTRAINT FK_Proyecto2 FOREIGN KEY(idProyecto) REFERENCES Proyecto.Proyecto(idProyecto)
 )
 
 CREATE TABLE Empresa.Proveedor(
@@ -158,8 +175,7 @@ BEGIN
 		SELECT @idempleado = idEmpleado FROM inserted
 
 		UPDATE Persona.Empleado SET
-		edad = DATEDIFF(YEAR,empleado_desde,GETDATE())-(CASE WHEN DATEADD(YY,DATEDIFF(YEAR,empleado_desde,GETDATE()),empleado_desde)>GETDATE() THEN 1 ELSE 0 END)
-		/(datediff(day,[empleado_desde],getdate()))/(365)/
+		antiguedad = DATEDIFF(YEAR,empleado_desde,GETDATE())-(CASE WHEN DATEADD(YY,DATEDIFF(YEAR,empleado_desde,GETDATE()),empleado_desde)>GETDATE() THEN 1 ELSE 0 END)
 		WHERE idEmpleado = @idempleado
 	END
 END
