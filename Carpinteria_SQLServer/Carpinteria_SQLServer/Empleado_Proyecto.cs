@@ -14,7 +14,7 @@ namespace Carpinteria_SQLServer
     public partial class Empleado_Proyecto : Form
     {
 
-        SqlConnection conexion = new SqlConnection("Server=DESKTOP-P986TH4\\SQLEXPRESS;" + "Database=Carpinteria;" + "Integrated Security=true;");
+        SqlConnection conexion = new SqlConnection("Server=CESARMEDELLIN\\SQLEXPRESS;" + "Database=Carpinteria;" + "Integrated Security=true;");
 
         DataTable empleados = new DataTable();
         DataTable proyectos = new DataTable();

@@ -16,7 +16,7 @@ namespace Carpinteria_SQLServer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Orden());
+            Application.Run(new Menu());
         }
     }
 }

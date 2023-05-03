@@ -65,6 +65,7 @@
             this.button1.TabIndex = 39;
             this.button1.Text = "Insertar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dataGridView1
             // 
@@ -108,7 +109,7 @@
             this.label1.TabIndex = 34;
             this.label1.Text = "Cantidad";
             // 
-            // Form10
+            // Detalle_Orden
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -121,7 +122,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Form10";
+            this.Name = "Detalle_Orden";
             this.Text = "Detalle Orden";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
