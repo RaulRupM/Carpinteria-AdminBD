@@ -85,7 +85,7 @@ namespace Carpinteria_SQLServer
 				int idProveedor = (int)proveedorSel["idProveedor"];
 
 				conexion.Open();
-				string query = "INSERT INTO Orden.Orden(idProveedor,fechaOrden) VALUES (@idProveedor,GETDATE())";
+				string query = "INSERT INTO Orden.Orden(idProveedor,fechaOrden,total) VALUES (@idProveedor,GETDATE(),0)";
 
 				SqlCommand comando = new SqlCommand(query, conexion);
 				comando.Parameters.Add(new SqlParameter("idProveedor", idProveedor));
@@ -125,6 +125,11 @@ namespace Carpinteria_SQLServer
 
 				button1.Enabled = true;
 				button2.Enabled = true;
+			}
+			else
+			{
+				button1.Enabled = false;
+				button2.Enabled = false;
 			}
 		}
 
@@ -192,7 +197,8 @@ namespace Carpinteria_SQLServer
 			catch (Exception ex)
 			{
 				conexion.Close();
-				throw new Exception(ex.Message);
+				MessageBox.Show("No se pueden eliminar los elementos","Error al eliminar",MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//throw new Exception(ex.Message);
 			}
 		}
 
@@ -228,6 +234,17 @@ namespace Carpinteria_SQLServer
 			NuevaOrden ordenInsumo = new NuevaOrden("insumo",idOrdenSeleccionada, delegado);
 			
 			ordenInsumo.ShowDialog();
+		}
+
+		private void tablaOrden_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+		{
+			if (e.Value != null && e.Value != DBNull.Value)
+			{
+				if (e.ColumnIndex == 3)
+				{
+					e.Value = decimal.Round((decimal)e.Value, 2);
+				}
+			}
 		}
 	}
 }

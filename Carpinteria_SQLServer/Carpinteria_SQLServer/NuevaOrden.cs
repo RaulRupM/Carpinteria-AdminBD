@@ -17,7 +17,10 @@ namespace Carpinteria_SQLServer
 		SqlConnection conexion = new SqlConnection("Server=FNTSMN3\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
 		private string producto;
 		private long idOrden;
+		private int idProductoSel;
+		private decimal subtotalActual = 0;
 		delegadoActualizaDatosTabla delegado;
+		
 
 		public NuevaOrden(string producto, long idOrden, delegadoActualizaDatosTabla delegado)
 		{
@@ -25,6 +28,7 @@ namespace Carpinteria_SQLServer
 			this.producto = producto;
 			this.idOrden = idOrden;
 			this.delegado = delegado;
+			idProductoSel = 0;
 			inicializaComponentes();
 		}
 
@@ -90,6 +94,8 @@ namespace Carpinteria_SQLServer
 				lblProducto.Text = "Insumo";
 				obtenerComboInsumos();
 				btnAgregar.Click += agregarInsumo;
+				btnModificar.Click += modificarInsumo;
+				btnEliminar.Click += eliminaDetalleInsumo;
 				muestraDatosTablaInsumos();
 			}
 			else
@@ -97,6 +103,8 @@ namespace Carpinteria_SQLServer
 				lblProducto.Text = "Herramienta";
 				obtenerComboHerramientas();
 				btnAgregar.Click += agregarHerramienta;
+				btnModificar.Click += modificarHerramienta;
+				btnEliminar.Click += eliminaDetalleHerramienta;
 				muestraDatosTablaHerramienta();
 			}
 			
@@ -174,7 +182,7 @@ namespace Carpinteria_SQLServer
 				comando.ExecuteNonQuery();
 				conexion.Close();
 
-
+				reiniciarControles();
 				muestraDatosTablaInsumos();
 				actualizarTablaOrden();
 			}
@@ -183,6 +191,74 @@ namespace Carpinteria_SQLServer
 				conexion.Close();
 				throw new Exception(ex.Message);
 			}
+		}
+
+		private void modificarInsumo(object sender, EventArgs e)
+		{
+			DataRowView productoSel = (DataRowView)comboProducto.SelectedItem;
+			int idInsumo = (int)productoSel["idInsumo"];
+			int cantidad = Int32.Parse(textBoxCantidad.Text);
+			decimal precio = (decimal)productoSel["precio"];
+
+			decimal subtotal = precio * cantidad;
+
+			restaSubtotalActual();
+
+			conexion.Open();
+			string query = @"UPDATE Orden.DetalleOrden 
+							SET cantidad = @cantidad, idInsumo = @idInsumo, subtotal = @subtotal
+							WHERE idOrden = @idOrden AND idInsumo = @idProducto ";
+
+			SqlCommand comando = new SqlCommand(query, conexion);
+			comando.Parameters.Add(new SqlParameter("idOrden", idOrden));
+			comando.Parameters.Add(new SqlParameter("cantidad", cantidad));
+			comando.Parameters.Add(new SqlParameter("idInsumo", idInsumo));
+			comando.Parameters.Add(new SqlParameter("subtotal", subtotal));
+			comando.Parameters.Add(new SqlParameter("idProducto", idProductoSel));
+
+			comando.ExecuteNonQuery();
+
+
+			conexion.Close();
+
+			sumaSubtotalActual(subtotal);
+
+			reiniciarControles();
+
+			muestraDatosTablaInsumos();
+			actualizarTablaOrden();
+		}
+
+		private void modificarHerramienta(object sender, EventArgs e)
+		{
+			DataRowView productoSel = (DataRowView)comboProducto.SelectedItem;
+			int idInsumo = (int)productoSel["idHerramienta"];
+			int cantidad = Int32.Parse(textBoxCantidad.Text);
+			decimal precio = (decimal)productoSel["precio"];
+
+			decimal subtotal = precio * cantidad;
+
+			restaSubtotalActual();
+			conexion.Open();
+			string query = @"UPDATE Orden.DetalleOrden 
+							SET cantidad = @cantidad, idHerramienta = @idHerramienta, subtotal = @subtotal
+							WHERE idOrden = @idOrden AND idHerramienta = @idProducto ";
+
+			SqlCommand comando = new SqlCommand(query, conexion);
+			comando.Parameters.Add(new SqlParameter("idOrden", idOrden));
+			comando.Parameters.Add(new SqlParameter("cantidad", cantidad));
+			comando.Parameters.Add(new SqlParameter("idHerramienta", idInsumo));
+			comando.Parameters.Add(new SqlParameter("subtotal", subtotal));
+			comando.Parameters.Add(new SqlParameter("idProducto", idProductoSel));
+
+			comando.ExecuteNonQuery();
+			conexion.Close();
+
+			reiniciarControles();
+			sumaSubtotalActual(subtotal);
+
+			muestraDatosTablaHerramienta();
+			actualizarTablaOrden();
 		}
 
 		private void agregarHerramienta(object sender, EventArgs e)
@@ -209,6 +285,7 @@ namespace Carpinteria_SQLServer
 				comando.ExecuteNonQuery();
 				conexion.Close();
 
+				reiniciarControles();
 				muestraDatosTablaHerramienta();
 				actualizarTablaOrden();
 
@@ -246,5 +323,108 @@ namespace Carpinteria_SQLServer
 			decimal precioProducto = (decimal)productoSel["precio"];
 			lblPrecioProd.Text = decimal.Round(precioProducto,2).ToString();
 		}
+
+		private void btnModificar_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+		{
+			if (dataGridView1.SelectedRows.Count > 0)
+			{
+				DataGridViewRow filaSeleccionada = dataGridView1.SelectedRows[0];
+				int productoSel = (int)filaSeleccionada.Cells[1].Value;
+				int cantidadSel = (int)filaSeleccionada.Cells[3].Value;
+				subtotalActual = (decimal) filaSeleccionada.Cells[4].Value;
+				comboProducto.SelectedValue = productoSel;
+				idProductoSel = productoSel;
+				textBoxCantidad.Text = cantidadSel.ToString();
+				btnModificar.Enabled = true;
+				btnEliminar.Enabled = true;	
+			}
+		}
+
+		private void eliminaDetalleHerramienta(object sender, EventArgs e)
+		{
+			DataRowView productoSel = (DataRowView)comboProducto.SelectedItem;
+			int idInsumo = (int)productoSel["idHerramienta"];
+			
+			restaSubtotalActual();
+			conexion.Open();
+			string query = @"DELETE Orden.DetalleOrden
+							WHERE idOrden = @idOrden AND idHerramienta = @idProducto ";
+
+			SqlCommand comando = new SqlCommand(query, conexion);
+			comando.Parameters.Add(new SqlParameter("idOrden", idOrden));
+			comando.Parameters.Add(new SqlParameter("idProducto", idInsumo));
+
+			comando.ExecuteNonQuery();
+			conexion.Close();
+
+			reiniciarControles();
+			muestraDatosTablaHerramienta();
+			actualizarTablaOrden();
+		}
+
+		private void eliminaDetalleInsumo(object sender, EventArgs e)
+		{
+			DataRowView productoSel = (DataRowView)comboProducto.SelectedItem;
+			int idInsumo = (int)productoSel["idInsumo"];
+
+			restaSubtotalActual();
+			conexion.Open();
+			string query = @"DELETE Orden.DetalleOrden
+							WHERE idOrden = @idOrden AND idInsumo = @idProducto ";
+
+			SqlCommand comando = new SqlCommand(query, conexion);
+			comando.Parameters.Add(new SqlParameter("idOrden", idOrden));
+			comando.Parameters.Add(new SqlParameter("idProducto", idInsumo));
+
+			comando.ExecuteNonQuery();
+			conexion.Close();
+
+			reiniciarControles();
+			muestraDatosTablaInsumos();
+			actualizarTablaOrden();
+		}
+
+		private void restaSubtotalActual()
+		{
+			conexion.Open();
+			string query = @"UPDATE Orden.Orden 
+							SET total = total - @subtotal
+							WHERE idOrden = @idOrden";
+
+			SqlCommand comando = new SqlCommand(query, conexion);
+			comando.Parameters.Add(new SqlParameter("idOrden", idOrden));
+			comando.Parameters.Add(new SqlParameter("subtotal", subtotalActual));
+
+			comando.ExecuteNonQuery();
+			conexion.Close();
+		}
+
+		private void sumaSubtotalActual(decimal nuevoSubtotal)
+		{
+			conexion.Open();
+			string query = @"UPDATE Orden.Orden 
+							SET total = total + @subtotal
+							WHERE idOrden = @idOrden";
+
+			SqlCommand comando = new SqlCommand(query, conexion);
+			comando.Parameters.Add(new SqlParameter("idOrden", idOrden));
+			comando.Parameters.Add(new SqlParameter("subtotal", nuevoSubtotal));
+
+			comando.ExecuteNonQuery();
+			conexion.Close();
+		}
+
+		private void reiniciarControles()
+		{
+			textBoxCantidad.Clear();
+			btnModificar.Enabled = false;
+			btnEliminar.Enabled = false;
+		}
+
 	}
 }

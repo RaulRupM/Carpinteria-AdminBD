@@ -67,6 +67,7 @@
 			this.dataGridView1.Size = new System.Drawing.Size(551, 165);
 			this.dataGridView1.TabIndex = 2;
 			this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
+			this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
 			// 
 			// lblCantidad
 			// 
@@ -115,6 +116,7 @@
 			// 
 			// btnEliminar
 			// 
+			this.btnEliminar.Enabled = false;
 			this.btnEliminar.Location = new System.Drawing.Point(487, 171);
 			this.btnEliminar.Name = "btnEliminar";
 			this.btnEliminar.Size = new System.Drawing.Size(75, 23);
@@ -124,12 +126,14 @@
 			// 
 			// btnModificar
 			// 
+			this.btnModificar.Enabled = false;
 			this.btnModificar.Location = new System.Drawing.Point(406, 171);
 			this.btnModificar.Name = "btnModificar";
 			this.btnModificar.Size = new System.Drawing.Size(75, 23);
 			this.btnModificar.TabIndex = 9;
 			this.btnModificar.Text = "Modificar";
 			this.btnModificar.UseVisualStyleBackColor = true;
+			this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
 			// 
 			// NuevaOrden
 			// 

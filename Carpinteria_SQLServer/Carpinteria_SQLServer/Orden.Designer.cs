@@ -88,6 +88,7 @@
 			this.tablaOrden.Name = "tablaOrden";
 			this.tablaOrden.Size = new System.Drawing.Size(625, 150);
 			this.tablaOrden.TabIndex = 4;
+			this.tablaOrden.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.tablaOrden_CellFormatting);
 			this.tablaOrden.SelectionChanged += new System.EventHandler(this.tablaOrden_SelectionChanged);
 			// 
 			// btnEliminar
