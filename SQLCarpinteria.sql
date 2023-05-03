@@ -353,3 +353,75 @@ BEGIN
 	WHERE idInsumo = @idInsumo
 END;
 
+-- CÓDIGO SQL NECESARIO PARA LAS PANTALLAS DE ORDENES
+CREATE SCHEMA Orden;
+USE ORDEN;
+CREATE TABLE Orden.Orden(
+	idOrden BIGINT IDENTITY (1,1) NOT NULL,
+	idProveedor INT NOT NULL,
+	fechaOrden DATE NOT NULL,
+	total MONEY,
+
+	CONSTRAINT PK_ID_ORDEN PRIMARY KEY (idOrden),
+	CONSTRAINT FK_ID_PROVEEDOR FOREIGN KEY (idProveedor) REFERENCES Proveedor.Proveedor(idProveedor)
+)
+
+go;
+
+CREATE TABLE Orden.DetalleOrden(
+	idOrden BIGINT  NOT NULL,
+	idHerramienta INT,
+	idInsumo INT,
+	cantidad INT NOT NULL,
+	subtotal MONEY NOT NULL,
+
+	CONSTRAINT FK_ID_ORDEN FOREIGN KEY (idOrden) REFERENCES Orden.Orden(idOrden),
+	CONSTRAINT FK_ID_HERRAMIENTA FOREIGN KEY (idHerramienta) REFERENCES Proyecto.Herramienta(idHerramienta),
+	CONSTRAINT FK_ID_INSUMO FOREIGN KEY (idInsumo) REFERENCES Proyecto.Insumo(idInsumo),
+)
+go
+
+
+ALTER TABLE Proyecto.Herramienta
+ADD precio MONEY;
+
+ALTER TABLE Proyecto.Herramienta
+ALTER COLUMN precio MONEY NOT NULL;
+
+--Trigger que actualiza la cantidad de insumos
+CREATE TRIGGER TR_INSUMO_ORDEN 
+ON Orden.DetalleOrden
+AFTER INSERT AS
+	DECLARE @idProducto AS BIGINT
+	DECLARE @idOrden AS BIGINT
+	BEGIN
+		IF EXISTS (SELECT 1 FROM inserted WHERE subtotal IS NOT NULL AND subtotal > 0)
+		BEGIN
+			PRINT 'ACTUALIZANDO EL TOTAL DE LA ORDEN'
+			SELECT @idOrden = idOrden FROM inserted
+
+			UPDATE Orden.Orden
+			SET Orden.total = Orden.total + (SELECT subtotal FROM inserted)
+			WHERE Orden.idOrden = @idOrden
+		END
+
+		IF EXISTS (SELECT 1 FROM inserted WHERE idInsumo IS NOT NULL)
+		BEGIN
+			SELECT @idProducto = idInsumo FROM inserted
+			PRINT 'Actualizando la cantidad de insumos'
+			UPDATE Proyecto.Insumo 
+			SET Insumo.cantidad = (Insumo.cantidad + (SELECT cantidad FROM inserted))
+			WHERE Insumo.idInsumo = @idProducto
+
+		END
+		ELSE
+		BEGIN
+			SELECT @idProducto = idHerramienta FROM inserted
+			PRINT 'Actualizando la cantidad de herramientas'
+			UPDATE Proyecto.Herramienta 
+			SET Herramienta.cantidad_disponible = (Herramienta.cantidad_disponible + (SELECT cantidad FROM inserted))
+			WHERE Herramienta.idHerramienta = @idProducto
+		END
+	END
+
+GO
