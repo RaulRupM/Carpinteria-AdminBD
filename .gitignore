@@ -115,5 +115,4 @@ dependency-reduced-pom.xml
 build.xml
 manifest.mf
 nbbuild/
-dist/
 Capinteria_PostgreSQL/Carpinteria/.vscode
