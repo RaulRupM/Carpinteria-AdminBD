@@ -99,9 +99,7 @@ Capinteria_PostgreSQL/Carpinteria/nbproject/private/
 
 # Archivos y carpetas de configuración de NetBeans
 nbproject/Makefile-*.mk
-Capinteria_PostgreSQL/Carpinteria/nbproject/genfiles.properties
-Capinteria_PostgreSQL/Carpinteria/nbproject/project.properties
-Capinteria_PostgreSQL/Carpinteria/nbproject/project.xml
+
 nbproject/built.xml
 
 # Carpetas y archivos generados por Maven
@@ -118,3 +116,4 @@ build.xml
 manifest.mf
 nbbuild/
 dist/
+Capinteria_PostgreSQL/Carpinteria/.vscode
