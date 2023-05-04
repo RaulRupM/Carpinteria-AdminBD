@@ -5,9 +5,9 @@ CREATE DATABASE "Carpinteria02"
 	CONNECTION LIMIT = -1
 	IS_TEMPLATE = FALSE;
 	
-CREATE SCHEMA Persona 
-CREATE SCHEMA Empresa 
-CREATE SCHEMA Proyecto
+CREATE SCHEMA Persona;
+CREATE SCHEMA Empresa;
+CREATE SCHEMA Proyecto;
 
 CREATE TABLE Persona.Cliente(
 	id_Cliente BIGSERIAL NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE Persona.Cliente(
 	num_pedidos INT NOT NULL,
 	
 	CONSTRAINT ID_CLIENTE PRIMARY KEY (id_Cliente)
-)
+);
 
 CREATE TABLE Persona.Empleado(
 	id_Empleado BIGSERIAL NOT NULL,
@@ -33,7 +33,16 @@ CREATE TABLE Persona.Empleado(
 	num_proyectos INT NOT NULL,
 	
 	CONSTRAINT PK_EMPLEADO PRIMARY KEY(id_Empleado)
-)
+);
+
+CREATE TABLE Proyecto.Insumo(
+	idInsumo BIGSERIAL NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	cantidad INT NOT NULL,
+	precio MONEY NOT NULL,
+	
+	CONSTRAINT PK_INSUMO PRIMARY KEY(idInsumo)
+);
 
 --Antiguedad Empleado
 CREATE OR REPLACE FUNCTION calcular_antiguedad() RETURNS TRIGGER AS $$

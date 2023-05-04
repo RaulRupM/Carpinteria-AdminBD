@@ -116,3 +116,4 @@ build.xml
 manifest.mf
 nbbuild/
 Capinteria_PostgreSQL/Carpinteria/.vscode
+.vscode/
