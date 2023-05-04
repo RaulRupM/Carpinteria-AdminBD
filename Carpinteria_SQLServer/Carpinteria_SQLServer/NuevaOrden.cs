@@ -37,11 +37,15 @@ namespace Carpinteria_SQLServer
 			try
 			{
 				conexion.Open();
-				string query = @"SELECT do.idOrden,do.idHerramienta, h.nombre AS herramienta,do.cantidad, do.subtotal 
-									FROM Orden.DetalleOrden do
-									INNER JOIN Proyecto.Herramienta h
-									ON do.idHerramienta = h.idHerramienta
-									WHERE do.idOrden = @idOrden";
+				string query = @"SELECT do.idOrden,CONCAT(do.idOrden,'-',pr.nombre) AS Orden,do.idHerramienta, h.nombre AS herramienta,do.cantidad, do.subtotal 
+								FROM Orden.DetalleOrden do
+								INNER JOIN Proyecto.Herramienta h
+								ON do.idHerramienta = h.idHerramienta
+								INNER JOIN Orden.Orden o
+								ON o.idOrden = do.idOrden
+								INNER JOIN Proveedor.Proveedor pr
+								ON o.idProveedor = pr.idProveedor
+								WHERE do.idOrden = @idOrden";
 				
 				SqlCommand comando = new SqlCommand(query, conexion);
 				comando.Parameters.Add(new SqlParameter("idOrden", idOrden));
@@ -51,6 +55,8 @@ namespace Carpinteria_SQLServer
 				adaptador.Fill(dt);
 				dataGridView1.DataSource = dt;
 				dataGridView1.AutoSize = true;
+				dataGridView1.Columns["idOrden"].Visible = false;
+				dataGridView1.Columns["idHerramienta"].Visible = false;
 				conexion.Close();
 			}
 			catch (Exception ex)
@@ -65,11 +71,15 @@ namespace Carpinteria_SQLServer
 			try
 			{
 				conexion.Open();
-				string query = @"SELECT do.idOrden,do.idInsumo, i.nombre AS insumo, do.cantidad, do.subtotal 
-									FROM Orden.DetalleOrden do
-									INNER JOIN Proyecto.Insumo i
-									ON do.idInsumo = i.idInsumo
-									WHERE do.idOrden = @idOrden";
+				string query = @"SELECT do.idOrden,CONCAT(do.idOrden,'-',pr.nombre) AS Orden,do.idInsumo, i.nombre AS insumo, do.cantidad, do.subtotal 
+								FROM Orden.DetalleOrden do
+								INNER JOIN Proyecto.Insumo i
+								ON do.idInsumo = i.idInsumo
+								INNER JOIN Orden.Orden o
+								ON o.idOrden = do.idOrden
+								INNER JOIN Proveedor.Proveedor pr
+								ON o.idProveedor = pr.idProveedor
+								WHERE do.idOrden = @idOrden";
 
 				SqlCommand comando = new SqlCommand(query, conexion);
 				comando.Parameters.Add(new SqlParameter("idOrden", idOrden));
@@ -79,6 +89,8 @@ namespace Carpinteria_SQLServer
 				adaptador.Fill(dt);
 				dataGridView1.DataSource = dt;
 				dataGridView1.AutoSize = true;
+				dataGridView1.Columns["idOrden"].Visible = false;
+				dataGridView1.Columns["idInsumo"].Visible = false;
 				conexion.Close();
 			}
 			catch (Exception ex)
@@ -304,13 +316,16 @@ namespace Carpinteria_SQLServer
 
 		private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
 		{
+			Console.WriteLine("\nSe disparó el evento!!\n");
 			if(e.Value != null && e.Value != DBNull.Value)
 			{
 				DataGridView tabla = (DataGridView)sender;
-				if(e.ColumnIndex == 1 ) {
-					tabla.Columns[e.ColumnIndex].Visible = false;
-				}
-				if(e.ColumnIndex == 4)
+
+				//if(e.ColumnIndex == 0)
+				//{
+				//	tabla.Columns["idOrden"].Visible = false;
+				//}
+				if(e.ColumnIndex == 5)
 				{
 					e.Value = decimal.Round((decimal)e.Value, 2);
 				}
@@ -334,9 +349,9 @@ namespace Carpinteria_SQLServer
 			if (dataGridView1.SelectedRows.Count > 0)
 			{
 				DataGridViewRow filaSeleccionada = dataGridView1.SelectedRows[0];
-				int productoSel = (int)filaSeleccionada.Cells[1].Value;
-				int cantidadSel = (int)filaSeleccionada.Cells[3].Value;
-				subtotalActual = (decimal) filaSeleccionada.Cells[4].Value;
+				int productoSel = (int)filaSeleccionada.Cells[2].Value;
+				int cantidadSel = (int)filaSeleccionada.Cells[4].Value;
+				subtotalActual = (decimal) filaSeleccionada.Cells[5].Value;
 				comboProducto.SelectedValue = productoSel;
 				idProductoSel = productoSel;
 				textBoxCantidad.Text = cantidadSel.ToString();

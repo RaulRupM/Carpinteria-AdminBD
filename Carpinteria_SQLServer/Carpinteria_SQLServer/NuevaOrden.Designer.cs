@@ -151,7 +151,7 @@
 			this.Controls.Add(this.btnAgregar);
 			this.Controls.Add(this.comboProducto);
 			this.Name = "NuevaOrden";
-			this.Text = "NuevaOrden";
+			this.Text = "Pedido";
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
