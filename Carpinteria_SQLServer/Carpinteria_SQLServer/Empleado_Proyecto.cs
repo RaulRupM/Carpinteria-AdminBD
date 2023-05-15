@@ -22,6 +22,7 @@ namespace Carpinteria_SQLServer
         String idempl;
         String idproy;
         String idviejoempl;
+        String idviejoproy;
         bool bandlider = false;
 
         public Empleado_Proyecto()
@@ -51,10 +52,11 @@ namespace Carpinteria_SQLServer
 
         public void muestra()
         {
-            string query = string.Concat("SELECT e.nombre AS 'Nombre empleado', p.nombre_proyecto AS 'Nombre proyecto', ep.actividad AS 'Actividad', ep.comision AS 'Comisión'" +
+            string query = string.Concat("SELECT  CONCAT(e.nombre, '-', e.antiguedad) AS 'Empleado', CONCAT(t.nombre_proyecto, '-', p.fecha_estimada) AS 'Proyecto', ep.actividad AS 'Actividad', ep.comision AS 'Comisión'" +
                 " FROM Proyecto.Empleado_Proyecto ep " +
                 "INNER JOIN Persona.Empleado e ON ep.id_empleado = e.idEmpleado " +
-                "INNER JOIN Proyecto.Proyecto p ON ep.id_proyecto = p.idProyecto");
+                "INNER JOIN Proyecto.Proyecto p ON ep.id_proyecto = p.idProyecto " +
+                "INNER JOIN Proyecto.Tipo_Proyecto t ON t.idTipo_proyecto = p.idTipo_proyecto ");
             SqlCommand cmd = new SqlCommand(query, conexion);
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             DataTable registro = new DataTable();
@@ -104,8 +106,9 @@ namespace Carpinteria_SQLServer
             try
             {
                 conexion.Open();
-                string consulta = string.Concat("SELECT *" +
-                " FROM Proyecto.Proyecto");
+                string consulta = string.Concat("SELECT p.idProyecto, t.nombre_proyecto" +
+                " FROM Proyecto.Proyecto p " +
+                "INNER JOIN Proyecto.Tipo_Proyecto t ON p.idTipo_proyecto = t.idTipo_proyecto ");
                 SqlCommand cmd = new SqlCommand(consulta, conexion);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 adapter.Fill(proyectos);
@@ -115,7 +118,7 @@ namespace Carpinteria_SQLServer
             catch (Exception ex)
             {
                 conexion.Close();
-                MessageBox.Show("No se encuentran empleados");
+                MessageBox.Show("No se encuentran proyectos");
             }
 
             for (int i = 0; i <= proyectos.Rows.Count - 1; i++)
@@ -139,7 +142,7 @@ namespace Carpinteria_SQLServer
             catch (Exception ex)
             {
                 conexion.Close();
-                MessageBox.Show("Error no se encontro empleado");
+                MessageBox.Show("Error, informacion repetida");
             }
         }
 
@@ -161,9 +164,9 @@ namespace Carpinteria_SQLServer
                 conexion.Open();
                
                 string consulta = "UPDATE Proyecto.Empleado_Proyecto " +
-                "SET id_empleado = " + idempl + ", actividad = '" + textBox1.Text + "', comision = " + textBox2.Text + "" +
+                "SET id_empleado = " + idempl + ", id_proyecto = " + idproy + ", actividad = '" + textBox1.Text + "', comision = " + textBox2.Text + "" +
                 " WHERE id_empleado = " + idviejoempl + " AND " +
-                "id_proyecto = " + idproy + "";
+                "id_proyecto = " + idviejoproy + "";
 
                 SqlCommand comd = new SqlCommand(consulta, conexion);
                 comd.ExecuteNonQuery();
@@ -186,6 +189,7 @@ namespace Carpinteria_SQLServer
             textBox1.Clear();
             textBox2.Clear();
             comboBox2.Enabled = true;
+            comboBox1.Enabled = true;
             comboBox1.SelectedIndex = -1;
             comboBox2.SelectedIndex = -1;
 
@@ -233,6 +237,14 @@ namespace Carpinteria_SQLServer
                 comboBox2.SelectedIndex = -1;
                 MessageBox.Show("No se puede eliminar a un supervisor");
             }
+            comboBox1.Enabled = true;
+            comboBox2.Enabled = true;
+            textBox1.Enabled = true;
+
+            empleados.Rows.Clear();
+            comboBox1.Items.Clear();
+            bandlider = false;
+            EmpleadoBusca();
 
         }
 
@@ -246,45 +258,60 @@ namespace Carpinteria_SQLServer
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             for (int i = 0; i <= proyectos.Rows.Count - 1; i++)
-                if (proyectos.Rows[i]["nombre_proyecto"].ToString() == dataGridView1.CurrentRow.Cells[1].Value.ToString())
+            {
+                string[] id = dataGridView1.CurrentRow.Cells[1].Value.ToString().Split('-');
+                if (proyectos.Rows[i]["nombre_proyecto"].ToString() == id[0])
                 {
                     comboBox2.SelectedIndex = i;
+                    idviejoproy = proyectos.Rows[i]["idProyecto"].ToString();
                 }
+            }
 
             if (dataGridView1.CurrentRow.Cells[2].Value.ToString() == "Supervisar")
             {
+                //MessageBox.Show("Modificar Supervisor hacerlo desde la tabla Proyecto");
                 empleados.Rows.Clear();
                 comboBox1.Items.Clear();
                 bandlider = true;
+                comboBox1.Enabled = false;
+                comboBox2.Enabled = false;
+                textBox1.Enabled = false;
                 EmpleadoBusca();
 
                 for (int i = 0; i <= empleados.Rows.Count - 1; i++)
-                    if (empleados.Rows[i]["nombre"].ToString() == dataGridView1.CurrentRow.Cells[0].Value.ToString())
+                {
+                    String[] id = dataGridView1.CurrentRow.Cells[0].Value.ToString().Split('-');
+                    if (empleados.Rows[i]["nombre"].ToString() == id[0])
                     {
                         comboBox1.SelectedIndex = i;
                         idviejoempl = empleados.Rows[i]["idEmpleado"].ToString();
                     }
+                }
             }
             else
             {
                 empleados.Rows.Clear();
                 comboBox1.Items.Clear();
                 bandlider = false;
+                comboBox1.Enabled = true;
+                comboBox2.Enabled = true;
+                textBox1.Enabled = true;
                 EmpleadoBusca();
 
                 for (int i = 0; i <= empleados.Rows.Count - 1; i++)
-                    if (empleados.Rows[i]["nombre"].ToString() == dataGridView1.CurrentRow.Cells[0].Value.ToString())
-                    { 
+                {
+                    String[] id = dataGridView1.CurrentRow.Cells[0].Value.ToString().Split('-');
+                    if (empleados.Rows[i]["nombre"].ToString() == id[0])
+                    {
                         comboBox1.SelectedIndex = i;
                         idviejoempl = empleados.Rows[i]["idEmpleado"].ToString();
                     }
+                }
 
 
             }
 
-            textBox1.Enabled = true;
             textBox2.Enabled = true;
-            comboBox2.Enabled = false;
 
             textBox1.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
             textBox2.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();

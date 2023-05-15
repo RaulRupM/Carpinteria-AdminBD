@@ -14,7 +14,7 @@ namespace Carpinteria_SQLServer
 {
 	public partial class InsumosProyecto : Form
 	{
-		SqlConnection conexion = new SqlConnection("Server=FNTSMN3\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
+		SqlConnection conexion = new SqlConnection("Server=CESARMEDELLIN\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
 		int cantidadActual;
 		int idProyectoActual;
 
@@ -57,7 +57,7 @@ namespace Carpinteria_SQLServer
 			{
 				conexion.Open();
 				//string query = "SELECT * FROM Proyecto.InsumoProyecto";
-				string query = "SELECT a.nombre AS 'insumo',b.nombre_proyecto as 'proyecto', c.cantidad, c.subtotal FROM Proyecto.InsumoProyecto c INNER JOIN Proyecto.Insumo a on a.idInsumo = c.idInsumo INNER JOIN Proyecto.Proyecto b on b.idProyecto = c.idProyecto;";
+				string query = "SELECT a.nombre AS 'insumo',CONCAT(t.idTipo_proyecto, '-' ,t.nombre_proyecto) AS 'Nombre Proyecto', c.cantidad, c.subtotal FROM Proyecto.InsumoProyecto c INNER JOIN Proyecto.Insumo a on a.idInsumo = c.idInsumo INNER JOIN Proyecto.Proyecto b on b.idProyecto = c.idProyecto INNER JOIN Proyecto.Tipo_Proyecto t ON b.idTipo_proyecto = t.idTipo_proyecto;";
 				
 				SqlCommand comando = new SqlCommand(query, conexion);
 				SqlDataAdapter adaptador = new SqlDataAdapter(comando);
@@ -80,7 +80,7 @@ namespace Carpinteria_SQLServer
 		{
 			conexion.Open();
 			//string query = "SELECT a.nombre AS 'insumo',b.nombre_proyecto as 'proyecto', c.cantidad, c.subtotal FROM Proyecto.InsumoProyecto c INNER JOIN Proyecto.Insumo a on a.idInsumo = c.idInsumo INNER JOIN Proyecto.Proyecto b on b.idProyecto = c.idProyecto;";
-			string query3 = "SELECT idProyecto, nombre_proyecto as 'nombre' FROM Proyecto.Proyecto";
+			string query3 = "SELECT p.idProyecto, CONCAT(t.idTipo_proyecto, '-' ,t.nombre_proyecto) as 'nombre' FROM Proyecto.Proyecto p INNER JOIN Proyecto.Tipo_Proyecto t ON p.idTipo_proyecto = t.idTipo_proyecto";
 			string query2 = "SELECT * FROM Proyecto.Insumo";
 			string query4 = "SELECT idInsumo, nombre FROM Proyecto.Insumo";
 
@@ -299,5 +299,10 @@ namespace Carpinteria_SQLServer
 		{
 
 		}
-	}
+
+        private void comboProyectos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

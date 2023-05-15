@@ -49,7 +49,7 @@ namespace Carpinteria_SQLServer
 				conexion.Close();
 				muestraDatosTabla();
 				EventosForms.limpiaTextbox(this);
-			}catch(Exception ex) { MessageBox.Show(ex.Message) ; }
+			}catch(Exception ex) { MessageBox.Show("Nombre existente") ; }
 		}
 
 		private void btnModificarHerramienta_Click(object sender, EventArgs e)

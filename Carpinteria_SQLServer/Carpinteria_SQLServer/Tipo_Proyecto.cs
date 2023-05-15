@@ -14,7 +14,7 @@ namespace Carpinteria_SQLServer
 {
     public partial class Tipo_Proyecto : Form
     {
-        SqlConnection conexion = new SqlConnection($"Server=CESARMEDELLIN\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
+        SqlConnection conexion = new SqlConnection($"Server=CESARMEDELLIN\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
         public Tipo_Proyecto()
         {
             InitializeComponent();
@@ -72,7 +72,7 @@ namespace Carpinteria_SQLServer
             catch (Exception ex)
             {
                 conexion.Close();
-                MessageBox.Show("Error de conexion, " + ex.Message);
+                MessageBox.Show("Proyecto ya existente, favor de cambiar nombre del proyecto");
             }
         }
 
@@ -90,7 +90,7 @@ namespace Carpinteria_SQLServer
             try
             {
                 conexion.Open();
-                string consulta = "DELETE FROM Proyecto.Tipo_Proyecto WHERE id_Tipo_Proyecto = " + tablaTipo.CurrentRow.Cells[0].Value;
+                string consulta = "DELETE FROM Proyecto.Tipo_Proyecto WHERE idTipo_proyecto = " + tablaTipo.CurrentRow.Cells[0].Value;
                 SqlCommand comd = new SqlCommand(consulta, conexion);
                 comd.ExecuteNonQuery();
                 conexion.Close();
@@ -117,7 +117,7 @@ namespace Carpinteria_SQLServer
                 conexion.Open();
                 string consulta = "UPDATE Proyecto.Tipo_Proyecto " +
                 "SET nombre_proyecto = '" + textBox1.Text + "', precio = " + textBox2.Text + " " +
-                    "WHERE id_Tipo_Proyecto = " + tablaTipo.CurrentRow.Cells[0].Value;
+                    "WHERE idTipo_proyecto = " + tablaTipo.CurrentRow.Cells[0].Value;
                 SqlCommand comd = new SqlCommand(consulta, conexion);
                 comd.ExecuteNonQuery();
                 conexion.Close();
@@ -147,6 +147,12 @@ namespace Carpinteria_SQLServer
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Tipo_Proyecto_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Proyecto p = new Proyecto();
+            p.Show();
         }
     }
 }

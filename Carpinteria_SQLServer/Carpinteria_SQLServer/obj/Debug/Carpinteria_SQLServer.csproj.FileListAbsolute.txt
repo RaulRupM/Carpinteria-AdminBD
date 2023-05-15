@@ -63,3 +63,51 @@ C:\Users\Cesar\OneDrive\Documentos\GitHub\Carpinteria-AdminBD\Carpinteria_SQLSer
 C:\Users\Cesar\OneDrive\Documentos\GitHub\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.CoreCompileInputs.cache
 C:\Users\Cesar\OneDrive\Documentos\GitHub\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.exe
 C:\Users\Cesar\OneDrive\Documentos\GitHub\Carpinteria-AdminBD\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.pdb
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.AssemblyReference.cache
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.SuggestedBindingRedirects.cache
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Cliente.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Detalle_Orden.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.InsumosProyecto.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Menu.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.NuevaOrden.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Orden.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Proveedor.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Empleado.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Proyecto.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Empleado_Proyecto.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Prestamo.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Herramienta.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Insumo.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Properties.Resources.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Tipo_Proyecto.resources
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.GenerateResource.cache
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.CoreCompileInputs.cache
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.exe
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.pdb
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.exe.config
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.exe
+C:\Users\Cesar\OneDrive\Escritorio\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.pdb
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.exe.config
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.exe
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\bin\Debug\Carpinteria_SQLServer.pdb
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.AssemblyReference.cache
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.SuggestedBindingRedirects.cache
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Cliente.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Detalle_Orden.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.InsumosProyecto.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Menu.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.NuevaOrden.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Orden.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Proveedor.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Empleado.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Proyecto.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Empleado_Proyecto.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Prestamo.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Herramienta.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Insumo.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Properties.Resources.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.Tipo_Proyecto.resources
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.GenerateResource.cache
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.csproj.CoreCompileInputs.cache
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.exe
+C:\Users\Cesar\OneDrive\Escritorio\ABD\Carpinteria SQL\Carpinteria_SQLServer\Carpinteria_SQLServer\obj\Debug\Carpinteria_SQLServer.pdb
