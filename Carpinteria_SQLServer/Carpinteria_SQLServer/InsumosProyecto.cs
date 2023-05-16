@@ -20,10 +20,13 @@ namespace Carpinteria_SQLServer
 		SqlConnection conexion = new SqlConnection("Server=CESARMEDELLIN\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
 		int cantidadActual;
 		int idProyectoActual;
+		delegadoActualizaDatos delegado;
 
-		public InsumosProyecto()
+		public InsumosProyecto(delegadoActualizaDatos delegado)
 		{
 			InitializeComponent();
+			this.delegado = delegado;
+
 		}
 
 
@@ -173,25 +176,6 @@ namespace Carpinteria_SQLServer
 			}
 		}
 
-        /*public void SumaProyectoInsumo()
-        {
-            try
-            {
-                conexion.Open();
-                string consulta = "UPDATE Proyecto.Proyecto " +
-                    "SET Total = Total + '"   "' WHERE idProyecto = " + dataGridView1.CurrentRow.Cells[0].Value;
-                SqlCommand comd = new SqlCommand(consulta, conexion);
-                comd.ExecuteNonQuery();
-                conexion.Close();
-            }
-            catch (Exception ex)
-            {
-                conexion.Close();
-                MessageBox.Show("La informacion se esta utilizando en la tabla Empleado Proyecto");
-            }
-        }*/
-
-
         private void button1_Click(object sender, EventArgs e)
 		{
 			insertaProyectoInsumo();
@@ -199,8 +183,7 @@ namespace Carpinteria_SQLServer
 			muestraDatosResto();
 			EventosForms.limpiaTextbox(this);
 
-			Proyecto actualizar = new Proyecto();
-			actualizar.delegadoMuestra();
+			delegado();
 		}
 
 		private void restaCantidad(int idInsumo, int idProyecto, int diferencia)
@@ -233,7 +216,7 @@ namespace Carpinteria_SQLServer
 			try
 			{
 				string texto2 = textBox1.Text;
-
+				diferencia = diferencia * -1;
 				conexion.Open();
 				string query = "UPDATE Proyecto.Insumo " +
 					"SET cantidad = cantidad + @diferencia "  +
@@ -269,19 +252,93 @@ namespace Carpinteria_SQLServer
 			if (diferencia < 0)
 			{
 				sumaCantidad(idInsumo,idProyecto,diferencia);
-			}
+				restaProyecto(idInsumo, idProyecto, diferencia);
+
+            }
 			else
 			{
 				restaCantidad(idInsumo,idProyecto, diferencia);
+				sumaProyecto(idInsumo, idProyecto, diferencia);
 			}
 
 			conexion.Close();
 			muestraDatosTabla();
 			muestraDatosResto();
 			EventosForms.limpiaTextbox(this);
+			delegado();
 		}
 
-		private void button3_Click(object sender, EventArgs e)
+        public void sumaProyecto(int idInsumo, int idProyecto, int diferencia)
+        {
+            try
+            {
+                conexion.Open();
+                string consulta = "UPDATE Proyecto.Proyecto " +
+                    "SET  Total = Total + ((SELECT precio FROM Proyecto.Insumo WHERE idInsumo = "+idInsumo+") * "+diferencia+")" +
+                    " WHERE idProyecto = "+idProyecto+"";
+                SqlCommand comd = new SqlCommand(consulta, conexion);
+                comd.ExecuteNonQuery();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                MessageBox.Show("La informacion se esta utilizando en la tabla Empleado Proyecto");
+            }
+
+            try
+            {
+                conexion.Open();
+                string consulta = "UPDATE Proyecto.InsumoProyecto " +
+                    "SET  subtotal = subtotal + ((SELECT precio FROM Proyecto.Insumo WHERE idInsumo = " + idInsumo + ") * " + diferencia + ")" +
+                    " WHERE idProyecto = " + idProyecto + "";
+                SqlCommand comd = new SqlCommand(consulta, conexion);
+                comd.ExecuteNonQuery();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                MessageBox.Show("La informacion se esta utilizando en la tabla Empleado Proyecto");
+            }
+        }
+
+        public void restaProyecto(int idInsumo, int idProyecto, int diferencia)
+        {
+			diferencia = diferencia * -1;
+            try
+            {
+                conexion.Open();
+                string consulta = "UPDATE Proyecto.Proyecto " +
+                    "SET  Total = Total - ((SELECT precio FROM Proyecto.Insumo WHERE idInsumo = " + idInsumo + ") * " + diferencia + ")" +
+                    " WHERE idProyecto = " + idProyecto + "";
+                SqlCommand comd = new SqlCommand(consulta, conexion);
+                comd.ExecuteNonQuery();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                MessageBox.Show("La informacion se esta utilizando en la tabla Empleado Proyecto");
+            }
+            try
+            {
+                conexion.Open();
+                string consulta = "UPDATE Proyecto.InsumoProyecto " +
+                    "SET  subtotal = subtotal - ((SELECT precio FROM Proyecto.Insumo WHERE idInsumo = " + idInsumo + ") * " + diferencia + ")" +
+                    " WHERE idProyecto = " + idProyecto + "";
+                SqlCommand comd = new SqlCommand(consulta, conexion);
+                comd.ExecuteNonQuery();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                MessageBox.Show("La informacion se esta utilizando en la tabla Empleado Proyecto");
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -300,12 +357,15 @@ namespace Carpinteria_SQLServer
 				muestraDatosTabla();
 				muestraDatosResto();
 				EventosForms.limpiaTextbox(this);
+				delegado();
 			}
 			catch (Exception ex)
 			{
 				conexion.Close();
 				throw new Exception(ex.Message);
 			}
+
+
 		}
 
 		private void tablaInsumosProyecto_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
