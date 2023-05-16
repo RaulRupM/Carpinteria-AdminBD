@@ -12,6 +12,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace Carpinteria_SQLServer
 {
+    public delegate void delegadoActualizaDatos();
     public partial class Proyecto : Form
     {
         SqlConnection conexion = new SqlConnection("Server=CESARMEDELLIN\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
@@ -45,6 +46,20 @@ namespace Carpinteria_SQLServer
             ClienteBusca();
             TipoProyectoBusca();
         }
+
+        public void delegadoMuestra()
+        {
+            delegadoActualizaDatos muestraProy = new delegadoActualizaDatos(prueba);
+            muestraProy();
+         
+        }
+
+        public void prueba ()
+        {
+            connectaBD();
+            MessageBox.Show("Aqui");
+        }
+
 
         public int connectaBD()
         {

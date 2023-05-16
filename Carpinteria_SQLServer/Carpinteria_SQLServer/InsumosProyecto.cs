@@ -9,9 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Carpinteria_SQLServer;
+
 
 namespace Carpinteria_SQLServer
 {
+
 	public partial class InsumosProyecto : Form
 	{
 		SqlConnection conexion = new SqlConnection("Server=CESARMEDELLIN\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
@@ -31,35 +34,37 @@ namespace Carpinteria_SQLServer
 			tablaInsumosProyecto.SelectionChanged += llenaTextBox;
 		}
 
-		public void llenaTextBox(object sender, EventArgs e)
-		{
-			
-			if (tablaInsumosProyecto.SelectedRows.Count > 0)
-			{
-				DataGridViewRow filaSeleccionada = tablaInsumosProyecto.SelectedRows[0];
-				foreach (DataGridViewCell celda in filaSeleccionada.Cells)
-				{
-					Control textBox = this.Controls.OfType<Control>().FirstOrDefault(c => c.Tag?.ToString() == celda.OwningColumn.Name);
-					textBox.Text = celda.Value.ToString();
-				}
+        public void llenaTextBox(object sender, EventArgs e)
+        {
 
-				cantidadActual = Int32.Parse(textBox3.Text);
-				comboInsumos.SelectedIndex = comboInsumos.FindStringExact(textBox1.Text);
-				comboProyectos.SelectedIndex = comboProyectos.FindStringExact(textBox2.Text);
-				DataRowView proyectoSel = (DataRowView)comboProyectos.SelectedItem;
-				idProyectoActual = (int)proyectoSel["idProyecto"];
-			}
-		}
+            if (tablaInsumosProyecto.SelectedRows.Count > 0)
+            {
+                DataGridViewRow filaSeleccionada = tablaInsumosProyecto.SelectedRows[0];
+                foreach (DataGridViewCell celda in filaSeleccionada.Cells)
+                {
+                    Control textBox = this.Controls.OfType<Control>().FirstOrDefault(c => string.Equals(c.Tag?.ToString(), celda.OwningColumn.Name, StringComparison.OrdinalIgnoreCase));
+                    textBox.Text = celda.Value.ToString();
+                }
 
-		private void muestraDatosTabla()
+                cantidadActual = Int32.Parse(textBox3.Text);
+                string insumoSel = textBox1.Text.Split('-')[0];
+                string proyectoSeleccionado = textBox2.Text.Split('-')[0];
+                comboInsumos.SelectedIndex = comboInsumos.FindStringExact(insumoSel);
+                comboProyectos.SelectedIndex = comboProyectos.FindStringExact(proyectoSeleccionado);
+                DataRowView proyectoSel = (DataRowView)comboProyectos.SelectedItem;
+                idProyectoActual = (int)proyectoSel["idProyecto"];
+            }
+        }
+
+        private void muestraDatosTabla()
 		{
 			try
 			{
 				conexion.Open();
-				//string query = "SELECT * FROM Proyecto.InsumoProyecto";
-				string query = "SELECT a.nombre AS 'insumo',CONCAT(t.idTipo_proyecto, '-' ,t.nombre_proyecto) AS 'Nombre Proyecto', c.cantidad, c.subtotal FROM Proyecto.InsumoProyecto c INNER JOIN Proyecto.Insumo a on a.idInsumo = c.idInsumo INNER JOIN Proyecto.Proyecto b on b.idProyecto = c.idProyecto INNER JOIN Proyecto.Tipo_Proyecto t ON b.idTipo_proyecto = t.idTipo_proyecto;";
-				
-				SqlCommand comando = new SqlCommand(query, conexion);
+                //string query = "SELECT * FROM Proyecto.InsumoProyecto";
+                string query = "SELECT CONCAT(a.nombre,'-' ,a.precio)  AS 'insumo',CONCAT(t.nombre_proyecto, '-' ,b.fecha_estimada) AS 'Proyecto', c.cantidad, c.subtotal FROM Proyecto.InsumoProyecto c INNER JOIN Proyecto.Insumo a on a.idInsumo = c.idInsumo INNER JOIN Proyecto.Proyecto b on b.idProyecto = c.idProyecto INNER JOIN Proyecto.Tipo_Proyecto t ON b.idTipo_proyecto = t.idTipo_proyecto;";
+
+                SqlCommand comando = new SqlCommand(query, conexion);
 				SqlDataAdapter adaptador = new SqlDataAdapter(comando);
 				DataTable dt = new DataTable();
 				adaptador.Fill(dt);
@@ -67,8 +72,9 @@ namespace Carpinteria_SQLServer
 				tablaInsumosProyecto.DataSource = dt;
 
 				tablaInsumosProyecto.AutoSize = true;
+                tablaInsumosProyecto.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-				conexion.Close();
+                conexion.Close();
 			}
 			catch (Exception ex) { 
 				conexion.Close();
@@ -79,9 +85,10 @@ namespace Carpinteria_SQLServer
 		private void muestraDatosResto()
 		{
 			conexion.Open();
-			//string query = "SELECT a.nombre AS 'insumo',b.nombre_proyecto as 'proyecto', c.cantidad, c.subtotal FROM Proyecto.InsumoProyecto c INNER JOIN Proyecto.Insumo a on a.idInsumo = c.idInsumo INNER JOIN Proyecto.Proyecto b on b.idProyecto = c.idProyecto;";
-			string query3 = "SELECT p.idProyecto, CONCAT(t.idTipo_proyecto, '-' ,t.nombre_proyecto) as 'nombre' FROM Proyecto.Proyecto p INNER JOIN Proyecto.Tipo_Proyecto t ON p.idTipo_proyecto = t.idTipo_proyecto";
-			string query2 = "SELECT * FROM Proyecto.Insumo";
+            //string query = "SELECT a.nombre AS 'insumo',b.nombre_proyecto as 'proyecto', c.cantidad, c.subtotal FROM Proyecto.InsumoProyecto c INNER JOIN Proyecto.Insumo a on a.idInsumo = c.idInsumo INNER JOIN Proyecto.Proyecto b on b.idProyecto = c.idProyecto;";
+            //string query3 = "SELECT p.idProyecto, CONCAT(t.idTipo_proyecto, '-' ,t.nombre_proyecto) as 'nombre' FROM Proyecto.Proyecto p INNER JOIN Proyecto.Tipo_Proyecto t ON p.idTipo_proyecto = t.idTipo_proyecto";
+            string query3 = "SELECT p.idProyecto, t.nombre_proyecto as 'nombre' FROM Proyecto.Proyecto p INNER JOIN Proyecto.Tipo_Proyecto t ON p.idTipo_proyecto = t.idTipo_proyecto";
+            string query2 = "SELECT * FROM Proyecto.Insumo";
 			string query4 = "SELECT idInsumo, nombre FROM Proyecto.Insumo";
 
 			
@@ -166,13 +173,34 @@ namespace Carpinteria_SQLServer
 			}
 		}
 
+        /*public void SumaProyectoInsumo()
+        {
+            try
+            {
+                conexion.Open();
+                string consulta = "UPDATE Proyecto.Proyecto " +
+                    "SET Total = Total + '"   "' WHERE idProyecto = " + dataGridView1.CurrentRow.Cells[0].Value;
+                SqlCommand comd = new SqlCommand(consulta, conexion);
+                comd.ExecuteNonQuery();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                MessageBox.Show("La informacion se esta utilizando en la tabla Empleado Proyecto");
+            }
+        }*/
 
-		private void button1_Click(object sender, EventArgs e)
+
+        private void button1_Click(object sender, EventArgs e)
 		{
 			insertaProyectoInsumo();
 			muestraDatosTabla();
 			muestraDatosResto();
 			EventosForms.limpiaTextbox(this);
+
+			Proyecto actualizar = new Proyecto();
+			actualizar.delegadoMuestra();
 		}
 
 		private void restaCantidad(int idInsumo, int idProyecto, int diferencia)

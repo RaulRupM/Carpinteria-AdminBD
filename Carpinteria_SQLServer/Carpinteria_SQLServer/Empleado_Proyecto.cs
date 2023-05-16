@@ -187,6 +187,7 @@ namespace Carpinteria_SQLServer
             modificarRegistro();
             conectaBD();
             textBox1.Clear();
+            textBox1.Enabled = true;
             textBox2.Clear();
             comboBox2.Enabled = true;
             comboBox1.Enabled = true;

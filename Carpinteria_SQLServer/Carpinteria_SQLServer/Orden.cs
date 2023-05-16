@@ -13,7 +13,7 @@ namespace Carpinteria_SQLServer
 {
 	public partial class Orden : Form
 	{
-		SqlConnection conexion = new SqlConnection("Server=FNTSMN3\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
+		SqlConnection conexion = new SqlConnection("Server=CESARMEDELLIN\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
 		public Orden()
 		{
 			InitializeComponent();

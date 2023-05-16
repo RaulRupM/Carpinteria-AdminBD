@@ -14,7 +14,7 @@ namespace Carpinteria_SQLServer
 	public delegate void delegadoActualizaDatosTabla();
 	public partial class NuevaOrden : Form
 	{
-		SqlConnection conexion = new SqlConnection("Server=FNTSMN3\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
+		SqlConnection conexion = new SqlConnection("Server=CESARMEDELLIN\\SQLEXPRESS;Database=Carpinteria;Integrated Security=true");
 		private string producto;
 		private long idOrden;
 		private int idProductoSel;
@@ -426,5 +426,9 @@ namespace Carpinteria_SQLServer
 			btnEliminar.Enabled = false;
 		}
 
-	}
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
