@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -43,6 +44,19 @@ public class Empleado extends javax.swing.JFrame {
         EmpleadoDesde.setDate(Fecha);
         EmpleadoDesde.enable(false);
         
+        Calendar startCal = Calendar.getInstance();
+        startCal.set(1995,Calendar.JANUARY,1);
+        Date startDate = startCal.getTime();
+        
+        Calendar endCal = Calendar.getInstance();
+        endCal.set(Calendar.DAY_OF_MONTH, endCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = endCal.getTime();
+        
+        EmpleadoDesde.setDate(Fecha);
+        this.EmpleadoDesde.setSelectableDateRange(this.EmpleadoDesde.getDate(),
+        this.EmpleadoDesde.getDate());
+        
+        txtNumProyecto.setEnabled(false);
         muestra();
         
         tablaEmpleado.addMouseListener(new MouseAdapter() {
@@ -52,11 +66,16 @@ public class Empleado extends javax.swing.JFrame {
                 int row = table.rowAtPoint(point);
                 if (Mouse_evt.getClickCount() == 1) {
                     id=tablaEmpleado.getValueAt(tablaEmpleado.getSelectedRow(), 0).toString();
+                    String puesto = tablaEmpleado.getValueAt(tablaEmpleado.getSelectedRow(), 1).toString();
+                    ComboBoxPuesto.setSelectedItem(puesto);
                     txtNombre.setText(tablaEmpleado.getValueAt(tablaEmpleado.getSelectedRow(), 2).toString());
                     txtTelefono.setText(tablaEmpleado.getValueAt(tablaEmpleado.getSelectedRow(), 3).toString());
                     txtDireccion.setText(tablaEmpleado.getValueAt(tablaEmpleado.getSelectedRow(), 4).toString());
                     txtSueldo.setText(tablaEmpleado.getValueAt(tablaEmpleado.getSelectedRow(), 5).toString());
                     txtNumProyecto.setText(tablaEmpleado.getValueAt(tablaEmpleado.getSelectedRow(), 8).toString());
+               
+                     EmpleadoDesde.setSelectableDateRange(startDate,endDate);
+                     txtNumProyecto.setEnabled(true);
                 }
             }
         
@@ -112,7 +131,7 @@ public class Empleado extends javax.swing.JFrame {
             txtDireccion.setText("");
             txtSueldo.setText("");
             txtAntiguedad.setText("0");
-            txtNumProyecto.setText("");
+            txtNumProyecto.setText("0");
             
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,ex);
@@ -154,12 +173,12 @@ public class Empleado extends javax.swing.JFrame {
                             + "SET Tipo_Empleado = '" + ComboBoxPuesto.getSelectedItem() +"',"
                             + "Nombre_Empleado = '" + txtNombre.getText() + "',"
                             + "Telefono_Empleado = '" +txtTelefono.getText() + "',"
-                            + "Direccion_Empleado = '" + txtDireccion.getText() + "'"
-                            + "Sueldo = " + txtSueldo.getText() + ","
+                            + "Direccion_Empleado = '" + txtDireccion.getText() + "',"
+                            + "Sueldo = '" + txtSueldo.getText() + "',"
                             + "Empleado_desde = '" + EmpleadoDesde.getDate() + "',"
                             + "Antiguedad = " + antiguedad + ","
                             + "num_proyectos = " + txtNumProyecto.getText() + ""
-                            + "WHERE id_Empleado = " + id;
+                            + " WHERE id_Empleado = " + id;
             
             corrida.executeUpdate(Query);
             corrida.close();
@@ -196,6 +215,8 @@ public class Empleado extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -220,7 +241,20 @@ public class Empleado extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         ComboBoxPuesto = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
+
+        setTitle("Empleado");
 
         jLabel1.setText("Empleado");
 
@@ -272,8 +306,6 @@ public class Empleado extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tablaEmpleado);
-
-        EmpleadoDesde.setEnabled(false);
 
         btnInsertar.setText("Insertar");
         btnInsertar.addActionListener(new java.awt.event.ActionListener() {
@@ -460,6 +492,8 @@ public class Empleado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labael;
     private javax.swing.JTable tablaEmpleado;
     private javax.swing.JTextField txtAntiguedad;
