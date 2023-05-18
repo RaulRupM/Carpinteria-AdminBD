@@ -54,30 +54,34 @@ CREATE TABLE Empresa.Proveedor(
 	CONSTRAINT PK_PROVEEDOR PRIMARY KEY(idProveedor)
 );
 
+DROP TABLE Proyecto.Tipo_Proyecto;
+
+CREATE TABLE Proyecto.Tipo_Proyecto(
+	idTipo_Proyecto BIGSERIAL NOT NULL,
+	Nombre_Proyecto VARCHAR(50) NOT NULL,
+	Precio MONEY NOT NULL,
+
+	CONSTRAINT PK_TIPO_Proyecto PRIMARY KEY(idTipo_Proyecto)
+)
 
 --Antiguedad Empleado
-CREATE OR REPLACE FUNCTION calcular_antiguedad() RETURNS TRIGGER AS $$
-DECLARE
-    idempleado BIGINT;
+CREATE OR REPLACE FUNCTION calcular_antiguedad()
+RETURNS TRIGGER AS $$
 BEGIN
-    IF TG_OP = 'INSERT' THEN
-        idempleado := NEW.idEmpleado;
-    ELSE
-        idempleado := OLD.idEmpleado;
-    END IF;
-    
-    UPDATE Persona.Empleado SET
-        antiguedad = EXTRACT(YEAR FROM age(empleado_desde)) - 
-               CASE WHEN DATE_TRUNC('year', empleado_desde) + 
-                         INTERVAL '1 year' > now() 
-                    THEN 1 
-                    ELSE 0 
-               END
-    WHERE idEmpleado = idempleado;
-    
+    NEW.Antiguedad := EXTRACT(YEAR FROM AGE(CURRENT_DATE, NEW.Empleado_desde));
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+--Asisociar el trigger a la tabla empleado
+CREATE TRIGGER trigger_calcular_antiguedad
+BEFORE INSERT OR UPDATE ON Persona.Empleado
+FOR EACH ROW
+EXECUTE FUNCTION calcular_antiguedad();
+
+
+DROP TRIGGER IF EXISTS trigger_calcular_antiguedad ON Persona.Empleado;
+DROP FUNCTION IF EXISTS calcular_antiguedad();
 
 
 
