@@ -7,10 +7,13 @@ package carpinteria;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import org.postgresql.util.PSQLException;
 
 /**
  *
@@ -30,6 +33,7 @@ public class Insumo extends javax.swing.JFrame {
 
     public Insumo() {
         initComponents();
+        jTextField2.enable(false);
         asociarEventosBotones();
         asociarEventosTabla();
         llenarTablaInsumo();
@@ -97,7 +101,7 @@ public class Insumo extends javax.swing.JFrame {
         try {
             conexion = getConexion();
             Statement st = conexion.createStatement();
-            String sql = "SELECT * FROM Proyecto.Insumo";
+            String sql = "SELECT * FROM Proyecto.Insumo ORDER BY idInsumo ASC";
             String[] datos = new String[4];
             ResultSet rs = st.executeQuery(sql);
             DefaultTableModel modelo = new DefaultTableModel();
@@ -109,7 +113,7 @@ public class Insumo extends javax.swing.JFrame {
             while (rs.next()) {
                 datos[0] = rs.getString("idInsumo");
                 datos[1] = rs.getString("nombre");
-                datos[2] = rs.getString("cantidad");
+                datos[2] = rs.getString("cantidad_disponible");
                 datos[3] = rs.getString("precio");
                 modelo.addRow(datos);
             }
@@ -125,11 +129,16 @@ public class Insumo extends javax.swing.JFrame {
         try {
             conexion = getConexion();
             Statement st = conexion.createStatement();
-            String sql = "INSERT INTO Proyecto.Insumo (nombre, cantidad, precio) VALUES ('"+jTextField1.getText()+"', '"+jTextField2.getText()+"', '"+jTextField3.getText()+"')";
+            String sql = "INSERT INTO Proyecto.Insumo (nombre, precio) VALUES ('"+jTextField1.getText()+"', '"+jTextField2.getText()+"', '"+jTextField3.getText()+"')";
             st.executeUpdate(sql);
             llenarTablaInsumo();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al insertar insumo" + e.getMessage(), "Error",
+        } catch (PSQLException e) {
+            String mensaje = Excepciones.manejarExcepcionPSQL(e);
+            JOptionPane.showMessageDialog(null, "Error al insertar insumo" + mensaje, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch(SQLException e){
+            String mensaje = Excepciones.manejarExcepcionSQL(e);
+            JOptionPane.showMessageDialog(null, "Error al insertar insumo" + mensaje, "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -138,11 +147,16 @@ public class Insumo extends javax.swing.JFrame {
         try {
             conexion = getConexion();
             Statement st = conexion.createStatement();
-            String sql = "UPDATE Proyecto.Insumo SET nombre = '"+jTextField1.getText()+"', cantidad = '"+jTextField2.getText()+"', precio = '"+jTextField3.getText()+"' WHERE idInsumo = '"+id+"'";
+            String sql = "UPDATE Proyecto.Insumo SET nombre = '"+jTextField1.getText()+"', cantidad_disponible = '"+jTextField2.getText()+"', precio = '"+jTextField3.getText()+"' WHERE idInsumo = '"+id+"'";
             st.executeUpdate(sql);
             llenarTablaInsumo();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al modificar insumo" + e.getMessage(), "Error",
+        } catch (PSQLException e) {
+            String mensaje = Excepciones.manejarExcepcionPSQL(e);
+            JOptionPane.showMessageDialog(null, "Error al modificar insumo" + mensaje, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (SQLException e){
+            String mensaje = Excepciones.manejarExcepcionSQL(e);
+            JOptionPane.showMessageDialog(null, "Error al modificar insumo" + mensaje, "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -154,8 +168,13 @@ public class Insumo extends javax.swing.JFrame {
             String sql = "DELETE FROM Proyecto.Insumo WHERE idInsumo = '"+id+"'";
             st.executeUpdate(sql);
             llenarTablaInsumo();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al eliminar insumo" + e.getMessage(), "Error",
+        } catch (PSQLException e) {
+            String mensaje = Excepciones.manejarExcepcionPSQL(e);
+            JOptionPane.showMessageDialog(null, "Error al eliminar insumo" + mensaje, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch(SQLException e){
+            String mensaje = Excepciones.manejarExcepcionSQL(e);
+            JOptionPane.showMessageDialog(null, "Error al eliminar insumo" + mensaje, "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }

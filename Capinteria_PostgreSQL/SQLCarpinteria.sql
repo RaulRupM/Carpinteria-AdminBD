@@ -44,6 +44,17 @@ CREATE TABLE Proyecto.Insumo(
 	CONSTRAINT PK_INSUMO PRIMARY KEY(idInsumo)
 );
 
+CREATE TABLE Empresa.Proveedor(
+	idProveedor BIGSERIAL NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	telefono VARCHAR(100) NOT NULL,
+	direccion VARCHAR(100) NOT NULL,
+	correo VARCHAR(100) NOT NULL,
+	
+	CONSTRAINT PK_PROVEEDOR PRIMARY KEY(idProveedor)
+);
+
+
 --Antiguedad Empleado
 CREATE OR REPLACE FUNCTION calcular_antiguedad() RETURNS TRIGGER AS $$
 DECLARE
