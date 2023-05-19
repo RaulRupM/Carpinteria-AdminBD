@@ -305,7 +305,8 @@ BEGIN
 		SELECT @proyectoid = idProyecto FROM inserted
 
 		UPDATE Proyecto.Empleado_Proyecto
-		SET id_empleado = @empleadoid, id_proyecto = @proyectoid
+		SET id_empleado = @empleadoid
+		WHERE id_proyecto = @proyectoid
 	END
 END
 
