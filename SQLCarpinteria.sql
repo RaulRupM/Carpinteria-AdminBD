@@ -6,6 +6,7 @@ USE Carpinteria
 CREATE SCHEMA Persona 
 CREATE SCHEMA Empresa 
 CREATE SCHEMA Proyecto
+CREATE SCHEMA Orden
 DROP TABLE Persona.Cliente
 DROP TABLE Persona.Empleado
 
@@ -46,9 +47,11 @@ SELECT e.nombre AS 'id_empleado', h.nombre AS 'id_herramienta', p.fecha_prestamo
                 INNER JOIN Persona.Empleado e ON p.id_empleado = e.idEmpleado 
                 INNER JOIN Proyecto.Herramienta h ON p.id_herramienta = h.idHerramienta
 
+ALTER TABLE Proyecto.Tipo_Proyecto
+ALTER COLUMN nombre_proyecto varchar(50) NOT NULL;
 CREATE TABLE Proyecto.Tipo_Proyecto(
 	idTipo_proyecto INT IDENTITY(1,1) NOT NULL,
-	nombre_proyecto INT NOT NULL,
+	nombre_proyecto VARCHAR(50) NOT NULL,
 	precio MONEY NOT NULL,
 
 	CONSTRAINT PK_TIPO_Proyecto PRIMARY KEY(idTipo_proyecto),
@@ -58,6 +61,10 @@ ALTER TABLE Proyecto.Tipo_Proyecto
 ADD CONSTRAINT UQ_TIPO_PROYECTO
 UNIQUE (nombre_PROYECTO);
 
+
+ALTER TABLE Proyecto.Proyecto
+ALTER COLUMN fecha_entrega varchar(50) NOT NULL;
+
 CREATE TABLE Proyecto.Proyecto(
 	idProyecto INT IDENTITY(1,1) NOT NULL,
 	id_emp_supervisor INT NOT NULL,
@@ -66,7 +73,7 @@ CREATE TABLE Proyecto.Proyecto(
 	--nombre_proyecto VARCHAR(100) NOT NULL,
 	estado VARCHAR(100) NOT NULL,
 	fecha_estimada DATE NOT NULL,
-	fecha_entrega DATE NOT NULL,
+	fecha_entrega VARCHAR(50) NOT NULL,
 	descuento INT NOT NULL,
 	Total MONEY NOT NULL,
 
@@ -81,9 +88,10 @@ ALTER COLUMN fecha_entrega VARCHAR(50) NOT NULL;
 
 
 SELECT * FROM Proyecto.Proyecto
-SELECT p.idProyecto,CONCAT(e.nombre,'-',e.antiguedad) AS 'id_emp_supervisor' ,CONCAT(c.nombre,'-',c.correo) AS 'idCliente', p.nombre_proyecto, p.estado, p.fecha_entrega, p.fecha_estimada, p.descuento, p.Total
+SELECT p.idProyecto,CONCAT(e.nombre,'-',e.antiguedad) AS 'id_emp_supervisor' ,CONCAT(c.nombre,'-',c.correo) AS 'idCliente', CONCAT(t.nombre_proyecto, '_', t.idTipo_proyecto) AS 'Nombre Proyecto', p.estado, p.fecha_entrega, p.fecha_estimada, p.descuento, p.Total
 FROM Proyecto.Proyecto p 
 INNER JOIN Persona.Cliente c ON p.idCliente = c.idCliente
+INNER JOIN Proyecto.Tipo_Proyecto t ON t.idTipo_proyecto = p.idTipo_proyecto
 INNER JOIN Persona.Empleado e ON p.id_emp_supervisor = e.idEmpleado
 
 
@@ -119,6 +127,11 @@ ALTER TABLE Proyecto.Herramienta
 ADD CONSTRAINT UQ_NOMBRE_HERRA
 UNIQUE (nombre);
 
+
+DROP TABLE Proyecto.Herramienta
+TRUNCATE TABLE Proyecto.Herramienta
+SELECT * FROM Proyecto.Herramienta
+
 CREATE TABLE Proyecto.Empleado_Proyecto(
 	id_empleado INT NOT NULL,
 	id_proyecto INT NOT NULL,
@@ -130,6 +143,11 @@ CREATE TABLE Proyecto.Empleado_Proyecto(
 )
 
 SELECT * FROM Proyecto.Empleado_Proyecto
+SELECT e.nombre AS 'Nombre empleado', CONCAT(t.idTipo_proyecto, '-' ,t.nombre_proyecto) AS 'Nombre Proyecto', ep.actividad AS 'Actividad', ep.comision AS 'Comisión'
+                 FROM Proyecto.Empleado_Proyecto ep 
+                INNER JOIN Persona.Empleado e ON ep.id_empleado = e.idEmpleado 
+                INNER JOIN Proyecto.Proyecto p ON ep.id_proyecto = p.idProyecto
+                INNER JOIN Proyecto.Tipo_Proyecto t ON t.idTipo_proyecto = p.idTipo_proyecto
 
 DROP TABLE Proyecto.InsumoProyecto
 
@@ -162,6 +180,20 @@ CREATE TABLE Empresa.Proveedor(
 
 	CONSTRAINT PK_Proveedor PRIMARY KEY(idProveedor)
 )
+
+--UNIQUE Proyecto
+ALTER TABLE Proyecto.Proyecto ADD CONSTRAINT UQ_NOM_PROYECTO UNIQUE (idCliente, idTipo_proyecto, fecha_estimada);
+--UNIQUE Proyecto Empleado
+ALTER TABLE Proyecto.Empleado_Proyecto ADD CONSTRAINT UQ_EMPLPROY UNIQUE (id_empleado, id_proyecto);
+
+SELECT * FROM Proyecto.Empleado_Proyecto
+SELECT * FROM Proyecto.Proyecto
+
+DELETE FROM Proyecto.Empleado_Proyecto WHERE id_proyecto = 34;
+DELETE FROM Proyecto.Proyecto WHERE idProyecto = 35;
+SELECT p.idProyecto, t.idTipo_proyecto, t.nombre_proyecto, t.precio
+                FROM Proyecto.Tipo_Proyecto t
+                LEFT JOIN Proyecto.Proyecto p ON t.idTipo_proyecto = p.idTipo_proyecto
 
 --Antiguedad de empleado
 CREATE TRIGGER TR_EDAD ON Persona.Empleado
@@ -217,6 +249,84 @@ BEGIN
 		WHERE idHerramienta = @articuloId
 	END
 END
+
+--Suma de producto en tabla proyecto con Insumo
+DROP TRIGGER SUM_PROYECT
+CREATE TRIGGER TR_SUM_INSUMO ON Proyecto.InsumoProyecto
+
+FOR UPDATE AS
+DECLARE @proyectoId as BIGINT
+DECLARE @subtotal as INT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @proyectoId = idProyecto FROM inserted
+		SELECT @subtotal = subtotal FROM inserted
+
+
+		UPDATE Proyecto.Proyecto
+		SET Total = Total + @subtotal
+		WHERE idProyecto = @proyectoId
+	END
+END
+
+--Resta de producto
+DROP TRIGGER RESTAR_PRODCREATE 
+CREATE TRIGGER TR_REST_INSUMO ON Proyecto.InsumoProyecto
+
+AFTER INSERT AS
+DECLARE @proyectoId as BIGINT
+DECLARE @subtotal as INT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @proyectoId = idProyecto FROM inserted
+		SELECT @subtotal = subtotal FROM inserted
+
+
+		UPDATE Proyecto.Proyecto
+		SET Total = Total - @subtotal
+		WHERE idProyecto = @proyectoId
+	END
+END
+
+--Actualizacion de datos Proyecto a Empleado_Proyecto
+CREATE TRIGGER UPDATE_SUPERV ON Proyecto.Proyecto
+FOR UPDATE AS
+DECLARE @empleadoid as BIGINT
+DECLARE @proyectoid as BIGINT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @empleadoid = id_emp_supervisor FROM inserted
+		SELECT @proyectoid = idProyecto FROM inserted
+
+		UPDATE Proyecto.Empleado_Proyecto
+		SET id_empleado = @empleadoid, id_proyecto = @proyectoid
+	END
+END
+
+--Actualizacion de datos Empleado_Proyecto a Proyecto
+CREATE TRIGGER UPDATE_EMPL_PROY ON Proyecto.Empleado_Proyecto
+FOR UPDATE AS
+DECLARE @empleadoid as BIGINT
+DECLARE @proyectoid as BIGINT
+
+BEGIN 
+	IF EXISTS (SELECT * FROM inserted)
+	BEGIN 
+		SELECT @empleadoid = id_empleado FROM inserted
+		SELECT @proyectoid = id_proyecto FROM inserted
+
+		UPDATE Proyecto.Proyecto
+		SET id_emp_supervisor = @empleadoid, idTipo_proyecto = @proyectoid
+		WHERE idProyecto = @proyectoid
+	END
+END
+
 
 --Insertar datos a tabla empleados proyecto
 CREATE TRIGGER TR_INSERT_EMP ON Proyecto.Proyecto
@@ -355,6 +465,7 @@ FOR INSERT AS
 	END
 GO
 
+
 --Trigger que actualiza los insumos despues de eliminar un registro en InsumoProyecto
 CREATE TRIGGER TR_CANTIDAD_INSUMO
 ON Proyecto.InsumoProyecto
@@ -379,7 +490,7 @@ CREATE TABLE Orden.Orden(
 	total MONEY,
 
 	CONSTRAINT PK_ID_ORDEN PRIMARY KEY (idOrden),
-	CONSTRAINT FK_ID_PROVEEDOR FOREIGN KEY (idProveedor) REFERENCES Proveedor.Proveedor(idProveedor)
+	CONSTRAINT FK_ID_PROVEEDOR FOREIGN KEY (idProveedor) REFERENCES Empresa.Proveedor(idProveedor)
 )
 
 go;
