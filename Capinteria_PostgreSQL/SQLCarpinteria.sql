@@ -20,6 +20,12 @@ CREATE TABLE Persona.Cliente(
 	
 	CONSTRAINT ID_CLIENTE PRIMARY KEY (id_Cliente)
 );
+ALTER TABLE Persona.Cliente
+ADD CONSTRAINT UQ_CLIENTEUNICO1 UNIQUE(Telefono_Cliente);
+
+ALTER TABLE Persona.Cliente
+ADD CONSTRAINT UQ_CLIENTEUNICO3 UNIQUE(Correo_Cliente );
+
 
 CREATE TABLE Persona.Empleado(
 	id_Empleado BIGSERIAL NOT NULL,
@@ -34,6 +40,8 @@ CREATE TABLE Persona.Empleado(
 	
 	CONSTRAINT PK_EMPLEADO PRIMARY KEY(id_Empleado)
 );
+
+
 
 CREATE TABLE Proyecto.Insumo(
 	idInsumo BIGSERIAL NOT NULL,
@@ -97,6 +105,25 @@ CREATE TABLE Orden.DetalleOrden(
 
 DROP TABLE Proyecto.Tipo_Proyecto;
 
+CREATE TABLE Proyecto.Proyecto(
+	idProyecto BIGSERIAL NOT NULL,
+	id_emp_supervisor INT NOT NULL,
+	idCliente INT NOT NULL,
+	idTipo_proyecto INT NOT NULL,
+	estado VARCHAR(100) NOT NULL,
+	fecha_estimada DATE NOT NULL,
+	fecha_entrega VARCHAR(100) NOT NULL,
+	descuento INT NOT NULL,
+	Total MONEY NOT NULL,
+
+	CONSTRAINT PK_Proyecto PRIMARY KEY(idProyecto),
+	CONSTRAINT FK_Emp_Supervisor FOREIGN KEY(id_emp_supervisor) REFERENCES Persona.Empleado(id_Empleado),
+	CONSTRAINT FK_Cliente FOREIGN KEY(idCliente) REFERENCES Persona.Cliente(id_Cliente),
+	CONSTRAINT FK_TIPO_PROYECTO FOREIGN KEY(idTipo_proyecto) REFERENCES Proyecto.Tipo_Proyecto(idTipo_proyecto)
+)
+
+DROP TABLE Proyecto.Proyecto
+
 CREATE TABLE Proyecto.Tipo_Proyecto(
 	idTipo_Proyecto BIGSERIAL NOT NULL,
 	Nombre_Proyecto VARCHAR(50) NOT NULL,
@@ -104,6 +131,12 @@ CREATE TABLE Proyecto.Tipo_Proyecto(
 
 	CONSTRAINT PK_TIPO_Proyecto PRIMARY KEY(idTipo_Proyecto)
 )
+-- Restricciones
+	ALTER TABLE Persona.Empleado
+	ADD CONSTRAINT UQ_EMPLEADOUNICO1 UNIQUE(Telefono_Empleado);
+	
+	ALTER TABLE Proyecto.Tipo_Proyecto
+	ADD CONSTRAINT UQ_NombreProyecto UNIQUE(Nombre_Proyecto)
 
 --Antiguedad Empleado
 CREATE OR REPLACE FUNCTION calcular_antiguedad()
@@ -124,6 +157,22 @@ EXECUTE FUNCTION calcular_antiguedad();
 DROP TRIGGER IF EXISTS trigger_calcular_antiguedad ON Persona.Empleado;
 DROP FUNCTION IF EXISTS calcular_antiguedad();
 
+--Actualizar Total en proyecto
+CREATE OR REPLACE FUNCTION actualizar_total_proyecto()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Proyecto.Proyecto
+    SET Total = (SELECT Precio FROM Proyecto.Tipo_Proyecto WHERE idTipo_Proyecto = NEW.idTipo_proyecto)
+    WHERE idProyecto = NEW.idProyecto;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--Asociar el trigger a la tabla proyecto
+CREATE TRIGGER asignar_precio_proyecto
+AFTER INSERT OR UPDATE OF idTipo_proyecto on Proyecto.Proyecto
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_total_proyecto();
 
 
 CREATE OR REPLACE FUNCTION fn_tr_insumo_orden() RETURNS TRIGGER AS
@@ -169,5 +218,31 @@ AFTER INSERT OR UPDATE ON Orden.DetalleOrden
 FOR EACH ROW EXECUTE FUNCTION fn_tr_insumo_orden();
 
 
+--Numero proyectos clientes
+CREATE OR REPLACE FUNCTION incrementar_num_pedidos()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Persona.Cliente
+    SET num_pedidos = num_pedidos + 1
+    WHERE id_Cliente = NEW.idCliente;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
+--Asociar trigger a la tabla proyecto
+CREATE TRIGGER incrementar_pedidos_proyecto
+AFTER INSERT ON Proyecto.Proyecto
+FOR EACH ROW
+EXECUTE FUNCTION incrementar_num_pedidos();
+
+
+--Consultas
+SELECT CONCAT(p.idProyecto, '-' ,t.nombre_proyecto) AS NombreProyecto,CONCAT(e.Nombre_Empleado,'-',e.antiguedad) AS EmpleadoSupervisor, 
+                CONCAT(c.Nombre_Cliente,'-',c.Correo_Cliente) AS Cliente , p.estado AS Estado, p.fecha_estimada AS FechaEstimada, p.fecha_entrega AS FechadeEntrega, p.descuento AS Descuento, p.Total AS TotalManodeobra
+                FROM Proyecto.Proyecto p
+                INNER JOIN Persona.Cliente c ON p.idCliente = c.id_Cliente
+                INNER JOIN Proyecto.Tipo_Proyecto t ON p.idTipo_proyecto = t.idTipo_proyecto
+                INNER JOIN Persona.Empleado e ON p.id_emp_supervisor = e.id_Empleado ORDER BY idProyecto ASC
+				
+SELECT * FROM Proyecto.Proyecto 
 

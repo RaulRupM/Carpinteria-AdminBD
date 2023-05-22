@@ -89,13 +89,14 @@ public class Tipo_Proyecto extends javax.swing.JFrame {
         try {
             conexion = conectaDB();
             java.sql.Statement corrida = conexion.createStatement();
-            String Query = "INSERT INTO Proyecto.Tipo_Proyecto (Nombre_Proyecto,Precio) VALUES('" + txtNombre.getText()+ "', " + txtPrecio.getText()+ ");" ;
+            String Query = "INSERT INTO Proyecto.Tipo_Proyecto (Nombre_Proyecto,Precio) VALUES('" + txtNombre.getText()+ "', '" + txtPrecio.getText()+ "')" ;
             corrida.executeUpdate(Query);
             corrida.close();
             conexion.close();
             
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null , ex);
+            String Mensaje = "El proyecto ya existe";
+            JOptionPane.showMessageDialog(null , Mensaje);
         }
     }
     
@@ -115,7 +116,8 @@ public class Tipo_Proyecto extends javax.swing.JFrame {
             conexion.close();
             
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(null , ex);
+            String Mensaje = "El proyecto ya existe";
+            JOptionPane.showMessageDialog(null , Mensaje);
         }
     }
     
@@ -256,6 +258,8 @@ public class Tipo_Proyecto extends javax.swing.JFrame {
     private void btnInsertaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertaActionPerformed
        inserta();
        muestra();
+       
+       
     }//GEN-LAST:event_btnInsertaActionPerformed
 
     private void btnModificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificaActionPerformed

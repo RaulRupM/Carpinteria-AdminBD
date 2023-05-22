@@ -75,6 +75,7 @@ public class Cliente extends javax.swing.JFrame {
                     
                     fechaCliente.setSelectableDateRange(startDate,endDate);
                     txtPedidos.setEnabled(true);
+                    txtPedidos.setEnabled(false);
                     
                 }
             }
@@ -110,7 +111,8 @@ public class Cliente extends javax.swing.JFrame {
             conexion.close();
             
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null , ex);
+            String Mensaje = "El cliente ya existe";
+            JOptionPane.showMessageDialog(null , Mensaje);
         }
     }
     
@@ -133,7 +135,8 @@ public class Cliente extends javax.swing.JFrame {
             conexion.close();
           
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            String Mensaje = "El cliente ya existe";
+            JOptionPane.showMessageDialog(null , Mensaje);
         }
     }
     
