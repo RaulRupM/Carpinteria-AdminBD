@@ -14,7 +14,7 @@ public class Excepciones {
                 errorMessage = "Error: Duplicidad de clave primaria.";
                 break;
             case 1451: // Violación de restricción de integridad referencial
-                errorMessage = "Error: Violación de restricción de integridad referencial.";
+                errorMessage = "Error: El registro ya existe en otra tabla.";
                 break;
             case 1146: // Tabla no encontrada
                 errorMessage = "Error: La tabla especificada no existe.";
@@ -39,10 +39,10 @@ public class Excepciones {
 
         switch (sqlState) {
             case "23505": // Violación de restricción única (duplicidad de clave primaria)
-                errorMessage = "El " + (valorDuplicado.isEmpty() ? "":valorDuplicado) + " ya existe.";
+                errorMessage = (valorDuplicado.isEmpty() ? "":valorDuplicado) + " ya existe.";
                 break;
             case "23503": // Violación de restricción de integridad referencial
-                errorMessage = "Error: Violación de restricción de integridad referencial.";
+                errorMessage = "Error: el registro ya existe en otra tabla.";
                 break;
             case "42P01": // Tabla no encontrada
                 errorMessage = "Error: La tabla especificada no existe.";

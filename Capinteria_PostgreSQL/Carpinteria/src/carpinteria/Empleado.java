@@ -26,7 +26,7 @@ public class Empleado extends javax.swing.JFrame {
 
     private String HOST = "localhost";
     private String PUERTO = "5432";
-    private String DB = "Carpinteria";
+    private String DB = "Carpinteria02";
     private String USER = "postgres";
     private String PASS = "postgres";
     public String url = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + DB;

@@ -36,6 +36,7 @@ public class Proveedor extends javax.swing.JFrame {
      */
     public Proveedor() {
         initComponents();
+        setTitle("Proveedor");
         asociarEventosBotones();
         asociarEventosTabla();
         llenarTablaProveedor();

@@ -35,10 +35,12 @@ public class Herramienta extends javax.swing.JFrame {
 
     public Herramienta() {
         initComponents();
+        setTitle("Herramienta");
         asociarEventosBotones();
         asociarEventosTabla();
         llenarTablaHerramienta();
     }
+    
 
     public Connection getConexion() {
         Connection con = null;
@@ -123,6 +125,8 @@ public class Herramienta extends javax.swing.JFrame {
 
     private void insertarHerramienta() {
         try {
+            String dinero = inputPrecio.getText();
+            dinero = dinero.replace("$", "").replace(",", "");
             conexion = getConexion();
             String sql = """
                         INSERT INTO Proyecto.Herramienta (nombre, tipo, estado, precio)
@@ -133,7 +137,7 @@ public class Herramienta extends javax.swing.JFrame {
             pst.setString(1, jTextField1.getText());
             pst.setString(2, jTextField2.getText());
             pst.setString(3, jTextField3.getText());
-            pst.setBigDecimal(4, new BigDecimal(inputPrecio.getText()));
+            pst.setBigDecimal(4, new BigDecimal(dinero));
             pst.executeUpdate();
             llenarTablaHerramienta();
 
@@ -150,6 +154,8 @@ public class Herramienta extends javax.swing.JFrame {
 
     private void modificarHerramienta() {
         try {
+            String dinero = inputPrecio.getText();
+            dinero = dinero.replace("$", "").replace(",", "");
             conexion = getConexion();
             String sql = """
                     UPDATE Proyecto.Herramienta
@@ -160,7 +166,7 @@ public class Herramienta extends javax.swing.JFrame {
             pst.setString(1, jTextField1.getText());
             pst.setString(2, jTextField2.getText());
             pst.setString(3, jTextField3.getText());
-            pst.setBigDecimal(4, new BigDecimal(inputPrecio.getText()));
+            pst.setBigDecimal(4, new BigDecimal(dinero));
             pst.setBigDecimal(5, new BigDecimal(id));
             pst.executeUpdate();
 

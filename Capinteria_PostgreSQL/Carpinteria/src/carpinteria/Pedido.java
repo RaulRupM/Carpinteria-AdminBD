@@ -52,6 +52,7 @@ public class Pedido extends javax.swing.JFrame {
         this.pantallaOrden = pantallaOrden;
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setTitle("Pedido");
         llenarComboProducto();
         asociarEventosControles();
         llenarTablaPedido(tipoProducto.equals("Insumo"));

@@ -41,6 +41,7 @@ public class Orden extends javax.swing.JFrame {
     public Orden() {
         initComponents();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Orden");
         asociarEventosControles();
         llenarTablaOrden();
         llenarComboProveedores();
@@ -168,6 +169,8 @@ public class Orden extends javax.swing.JFrame {
     public void limpiar(){
         comboProveedores.setSelectedIndex(0);
         dateChooserOrden.setDate(null);
+        btnOrdenarHerramienta.setEnabled(false);
+        btnOrdenarInsumo.setEnabled(false);
     }
 
     public void llenarTablaOrden(){

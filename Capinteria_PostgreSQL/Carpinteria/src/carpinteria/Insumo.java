@@ -33,6 +33,7 @@ public class Insumo extends javax.swing.JFrame {
 
     public Insumo() {
         initComponents();
+        setTitle("Insumo");
         jTextField2.enable(false);
         asociarEventosBotones();
         asociarEventosTabla();
@@ -129,7 +130,7 @@ public class Insumo extends javax.swing.JFrame {
         try {
             conexion = getConexion();
             Statement st = conexion.createStatement();
-            String sql = "INSERT INTO Proyecto.Insumo (nombre, precio) VALUES ('"+jTextField1.getText()+"', '"+jTextField2.getText()+"', '"+jTextField3.getText()+"')";
+            String sql = "INSERT INTO Proyecto.Insumo (nombre, precio) VALUES ('"+jTextField1.getText()+"', '"+jTextField3.getText()+"')";
             st.executeUpdate(sql);
             llenarTablaInsumo();
         } catch (PSQLException e) {
