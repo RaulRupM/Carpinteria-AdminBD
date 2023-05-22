@@ -117,3 +117,7 @@ manifest.mf
 nbbuild/
 Capinteria_PostgreSQL/Carpinteria/.vscode
 .vscode/
+Carpinteria/nbproject/genfiles.properties
+Carpinteria/dist/Carpinteria.jar
+
+/Capinteria_PostgreSQL/Carpinteria/dist/
