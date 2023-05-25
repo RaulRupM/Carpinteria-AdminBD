@@ -8,6 +8,10 @@ package carpinteria;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,10 +29,14 @@ public class Reporte2 extends javax.swing.JFrame {
     public String url = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + DB;
     private Connection conexion = null;
     
+    String idempleado;
     
     public Reporte2() {
         initComponents();
         muestra2();
+        
+        comboEmpleado.setModel(new DefaultComboBoxModel(obtenNomEmpleado()));
+        
     }
     
     public Connection conectaDB() {
@@ -42,25 +50,87 @@ public class Reporte2 extends javax.swing.JFrame {
         return cone;
     }
     
+    public String[] obtenNomEmpleado(){
+    ArrayList<String> nomEmpleados = new ArrayList<>();
+    Connection conexion = null;
+    ResultSet rs = null;
+    
+    try {
+        conexion = conectaDB();
+        Statement corrida = conexion.createStatement();
+        String query = "SELECT Nombre_Empleado FROM Persona.Empleado";
+        rs = corrida.executeQuery(query);
+        
+        while (rs.next()) {
+            String nombre = rs.getString("Nombre_Empleado");
+            nomEmpleados.add(nombre);
+        }
+        
+        corrida.close();
+        conexion.close();  
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, ex.getMessage());
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (conexion != null) conexion.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    return nomEmpleados.toArray(new String[nomEmpleados.size()]);
+}
+    public String obtenerIdEmpleadoPorNombre(String nombreEmpleado) {
+        String idEmpleado = null;
+        Connection conexion = null;
+        ResultSet rs = null;
+        
+        try {
+            conexion = conectaDB();
+            Statement statement = conexion.createStatement();
+            String query = "SELECT id_Empleado FROM Persona.Empleado WHERE Nombre_Empleado = '" + nombreEmpleado + "'";
+            rs = statement.executeQuery(query);
+
+            if (rs.next()) {
+                idEmpleado = rs.getString("id_Empleado");
+            }
+
+            statement.close();
+            conexion.close();  
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        return idEmpleado;
+    }
+    
+    public void obtenIdEmpleado() {
+      if (comboEmpleado.getSelectedIndex() != -1) {
+          Object seleccionado = comboEmpleado.getSelectedItem();
+          String nombreLider = seleccionado.toString();
+          String idLider = obtenerIdEmpleadoPorNombre(nombreLider);
+          idempleado = idLider;
+      }
+    }
+    
     public void muestra() {
+        
+        obtenIdEmpleado();
+        
         try {
             conexion = conectaDB();
             java.sql.Statement corrida = conexion.createStatement();
-            String Query = "SELECT e.Nombre_Empleado, e.Sueldo\n" +
-                            "FROM Persona.Empleado e\n" +
-                            "WHERE e.Sueldo > (\n" +
-                            "    SELECT CAST(AVG(CAST(Sueldo AS decimal)) AS money)\n" +
-                            "    FROM Persona.Empleado\n" +
-                            ")";
+            String Query = "SELECT SUM(comision) AS TotaldeComision\n" +
+                            "FROM Proyecto.Empleado_Proyecto\n" +
+                            "WHERE id_empleado = (SELECT id_empleado\n" +
+                            "FROM Persona.Empleado\n" +
+                            "WHERE  id_empleado= " +  idempleado +" )";
             String[] datos = new String[2];
             ResultSet columnas = corrida.executeQuery(Query);
             DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("Nombre Empleado");
-            model.addColumn("Sueldo");
+            model.addColumn("Total de Comisiones");
             tablaReporte2.setModel(model);
             while (columnas.next()) {
                 datos[0] = columnas.getString(1);
-                datos[1] = columnas.getString(2);
                 model.addRow(datos);
             }
         } catch (Exception ex) {
@@ -71,8 +141,7 @@ public class Reporte2 extends javax.swing.JFrame {
     public void muestra2() {
     try {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Nombre Empleado");
-        model.addColumn("Sueldo");
+        model.addColumn("Total de Comisiones");
         tablaReporte2.setModel(model);
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(null, ex);
@@ -92,13 +161,14 @@ public class Reporte2 extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaReporte2 = new javax.swing.JTable();
         btnConsulta = new javax.swing.JButton();
+        comboEmpleado = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Reporte 2");
 
         jLabel1.setText("Reporte 2");
 
-        jLabel2.setText("<html>Obtener los empleados cuyo sueldo sea igual o mayor que el promedio de la suma de los sueldos de todos los empleados </html>");
+        jLabel2.setText("<html>Obtener la suma total de las comisiones generados por los empleados </html>");
 
         tablaReporte2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -117,37 +187,47 @@ public class Reporte2 extends javax.swing.JFrame {
             }
         });
 
+        comboEmpleado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(178, 178, 178)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnConsulta)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(168, 168, 168)
-                            .addComponent(jLabel1))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(19, 19, 19)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(62, 62, 62)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(310, Short.MAX_VALUE)
+                        .addComponent(btnConsulta)))
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(btnConsulta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(btnConsulta)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50))
         );
 
         pack();
@@ -191,6 +271,7 @@ public class Reporte2 extends javax.swing.JFrame {
  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsulta;
+    private javax.swing.JComboBox comboEmpleado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
