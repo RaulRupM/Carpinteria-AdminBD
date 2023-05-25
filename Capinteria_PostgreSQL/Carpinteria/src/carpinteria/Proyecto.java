@@ -171,7 +171,7 @@ public class Proyecto extends javax.swing.JFrame {
     try {
         conexion = conectaDB();
         Statement corrida = conexion.createStatement();
-        String query = "SELECT Nombre_Empleado FROM Persona.Empleado WHERE tipo_empleado= 'Líder' ";
+        String query = "SELECT Nombre_Empleado FROM Persona.Empleado WHERE tipo_empleado= 'Lider' ";
         rs = corrida.executeQuery(query);
         
         while (rs.next()) {
