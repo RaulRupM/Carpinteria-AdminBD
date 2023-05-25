@@ -20,7 +20,7 @@ public class Reporte1 extends javax.swing.JFrame {
 
      private String HOST = "localhost";
         private String PUERTO = "5432";
-        private String DB = "Carpinteria02";
+        private String DB = "Carpinteria";
         private String USER = "postgres";
         private String PASS = "postgres";
         public String url = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + DB;
@@ -52,22 +52,20 @@ public class Reporte1 extends javax.swing.JFrame {
     try {
         conexion = conectaDB();
         java.sql.Statement corrida = conexion.createStatement();
-        String Query = "SELECT c.Nombre_Cliente, COUNT(p.idProyecto) AS Total_Proyectos, p.fecha_estimada " +
+        String Query = "SELECT c.Nombre_Cliente, COUNT(p.idProyecto) AS Total_Proyectos " +
                         "FROM Persona.Cliente c " +
                         "INNER JOIN Proyecto.Proyecto p ON c.id_Cliente = p.idCliente " +
-                        "WHERE p.fecha_estimada BETWEEN '" + fechaInicio.getDate() + "' AND '" + FechaFin.getDate()+ "' " +
-                        "GROUP BY c.Nombre_Cliente, p.fecha_estimada";
+                        "WHERE p.fecha_estimada BETWEEN '" + fechaInicio.getDate()+ "'AND '" + FechaFin.getDate() +"' "+
+                        "GROUP BY c.Nombre_Cliente";
         String[] datos = new String[3]; // Changed the array size to match the number of columns
         ResultSet columnas = corrida.executeQuery(Query);
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Nombre Cliente");
-        model.addColumn("Numero de proyecto");
-        model.addColumn("Fecha Estimada");
+        model.addColumn("Número de Proyectos");
         tablaConsulta.setModel(model);
         while (columnas.next()) {
             datos[0] = columnas.getString(1);
             datos[1] = columnas.getString(2);
-            datos[2] = columnas.getString(3);
             model.addRow(datos);
         }
     } catch (Exception ex) {
@@ -96,7 +94,7 @@ public class Reporte1 extends javax.swing.JFrame {
 
         setTitle("Reporte 1");
 
-        jLabel1.setText("<html><p> Consulta que muestra el nombre del cliente, el número total de proyectos y la fecha de cada proyecto realizado dentro de un rango de fechas determinado </p> </html>");
+        jLabel1.setText("<html><p> Mostrar los nombres de los clientes y el número de proyectos realizados dentro de un rango de fechas determinados</p> </html>");
         jLabel1.setMaximumSize(new java.awt.Dimension(150, 300));
 
         jLabel2.setText("Fecha Inicio");
@@ -129,33 +127,33 @@ public class Reporte1 extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(207, 207, 207)
                 .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(237, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 23, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(FechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnConsultar))
-                            .addComponent(fechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(30, 30, 30))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnConsultar)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel3))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(FechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(fechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addGap(16, 16, 16)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,10 +162,9 @@ public class Reporte1 extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(FechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 41, Short.MAX_VALUE)
-                        .addComponent(btnConsultar)))
+                    .addComponent(FechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(btnConsultar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5))
