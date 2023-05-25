@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import carpinteria.models.BD;
 
 /**
  *
@@ -25,11 +28,12 @@ public class Proyecto extends javax.swing.JFrame {
 
     private String HOST = "localhost";
     private String PUERTO = "5432";
-    private String DB = "Carpinteria";
+    private String DB = "Carpinteria02";
     private String USER = "postgres";
     private String PASS = "postgres";
     public String url = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + DB;
     private Connection conexion = null;
+    private BD bd;
     
     public String []id;
     
@@ -39,8 +43,9 @@ public class Proyecto extends javax.swing.JFrame {
     
     
     
-    public Proyecto() {
+    public Proyecto(BD bd) {
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
         //Establecer Fecha con el rango de 01/01/95 hasta la fecha actual
         
@@ -97,6 +102,18 @@ public class Proyecto extends javax.swing.JFrame {
             }
         });
         
+        btnInsumo.addActionListener((e) -> {
+            InsumoProyecto ins = new InsumoProyecto(this, bd);
+            ins.setVisible(true);
+        });
+
+        this.bd = bd;
+        Controles controles = new Controles(this);
+        controles.verificarPrivilegiosYDesactivarControles(bd);
+        ArrayList<String> privilegios = bd.obtenerPrivilegiosUsuario();
+        if(privilegios.size() == 1){
+            btnEntregaProye.setEnabled(false);
+        }
     }
     
     public Connection conectaDB() {
@@ -677,7 +694,7 @@ public class Proyecto extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInsertaActionPerformed
 
     private void btnNuevoProyectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProyectoActionPerformed
-        Tipo_Proyecto TP = new Tipo_Proyecto();
+        Tipo_Proyecto TP = new Tipo_Proyecto(bd);
         TP.show();
     }//GEN-LAST:event_btnNuevoProyectoActionPerformed
 

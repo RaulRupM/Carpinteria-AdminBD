@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.postgresql.util.PSQLException;
 
+import carpinteria.models.BD;
 import carpinteria.models.HerramientaModel;
 import carpinteria.models.InsumoModel;
 import carpinteria.models.ItemProyecto;
@@ -46,7 +47,7 @@ public class Pedido extends javax.swing.JFrame {
     /**
      * Creates new form Pedido
      */
-    public Pedido(String tipoProducto, String idOrden, Orden pantallaOrden) {
+    public Pedido(String tipoProducto, String idOrden, Orden pantallaOrden, BD bd) {
         this.tipoProducto = tipoProducto;
         this.idOrden = idOrden;
         this.pantallaOrden = pantallaOrden;
@@ -56,6 +57,10 @@ public class Pedido extends javax.swing.JFrame {
         llenarComboProducto();
         asociarEventosControles();
         llenarTablaPedido(tipoProducto.equals("Insumo"));
+
+        Controles controles = new Controles(this);
+        controles.verificarPrivilegiosYDesactivarControles(bd);
+
     }
 
     private void asociarEventosControles() {

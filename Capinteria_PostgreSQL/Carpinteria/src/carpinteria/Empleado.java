@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import carpinteria.models.BD;
+
 /**
  *
  * @author alex_
@@ -38,6 +40,10 @@ public class Empleado extends javax.swing.JFrame {
     
     public Empleado() {
         initComponents();
+        inicializarControles();
+    }
+
+    private void inicializarControles(){
         txtNumProyecto.setEnabled(false);
         Date Fecha = new Date();
         
@@ -82,6 +88,13 @@ public class Empleado extends javax.swing.JFrame {
         
     }
     
+    public Empleado(BD bd){
+        initComponents();
+        inicializarControles();
+        Controles controles = new Controles(this);
+        controles.verificarPrivilegiosYDesactivarControles(bd);
+    }
+
     public Connection conectaDB() {
         Connection cone = null;
         try {

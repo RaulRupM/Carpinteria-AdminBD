@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import carpinteria.models.BD;
+
 /**
  *
  * @author alex_
@@ -19,7 +21,7 @@ public class Tipo_Proyecto extends javax.swing.JFrame {
 
     private String HOST = "localhost";
     private String PUERTO = "5432";
-    private String DB = "Carpinteria";
+    private String DB = "Carpinteria02";
     private String USER = "postgres";
     private String PASS = "postgres";
     public String url = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + DB;
@@ -27,7 +29,7 @@ public class Tipo_Proyecto extends javax.swing.JFrame {
     
     public String id;
     
-    public Tipo_Proyecto() {
+    public Tipo_Proyecto(BD bd) {
         initComponents();
         
         muestra();
@@ -44,6 +46,9 @@ public class Tipo_Proyecto extends javax.swing.JFrame {
                 }
             }
         });
+
+        Controles controles = new Controles(this);
+        controles.verificarPrivilegiosYDesactivarControles(bd);
     }
     
     public Connection conectaDB() {

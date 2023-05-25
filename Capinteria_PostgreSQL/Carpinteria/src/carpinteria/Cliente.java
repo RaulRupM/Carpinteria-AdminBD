@@ -3,10 +3,12 @@ package carpinteria;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
@@ -14,6 +16,9 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import carpinteria.models.BD;
+import carpinteria.models.enums.Privilegio;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,18 +34,23 @@ public class Cliente extends javax.swing.JFrame {
 
     private String HOST = "localhost";
     private String PUERTO = "5432";
-    private String DB = "Carpinteria";
+    private String DB = "Carpinteria02";
     private String USER = "postgres";
     private String PASS = "postgres";
     public String url = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + DB;
     private Connection conexion = null;
     public String id;
     public String fecha;
+    private BD bd;
     
     
     public Cliente() {
         
         initComponents();
+        inicializarControles();
+    }
+
+    private void inicializarControles(){
         
         Calendar startCal = Calendar.getInstance();
         startCal.set(1995,Calendar.JANUARY,1);
@@ -81,8 +91,46 @@ public class Cliente extends javax.swing.JFrame {
             }
         
         });
+        
     }
     
+    public Cliente(BD bd) {
+        initComponents();
+        this.bd = bd;
+        muestra();
+        desactivaControles(bd);
+    }
+
+    //Desactivar los controles de la ventana acorde a los privilegios del usuario
+    public void desactivaControles(BD bd) {
+        ArrayList<String> privilegios = bd.obtenerPrivilegiosUsuario();
+        if(privilegios.contains(Privilegio.SELECT.toString()) || privilegios.contains(Privilegio.UPDATE.toString())) {
+            inicializarControles();
+        }
+        if(!privilegios.contains(Privilegio.INSERT.toString())) {
+            desactivarTextBox();
+            btnInserta.setEnabled(false);
+        }
+        if(!privilegios.contains(Privilegio.UPDATE.toString())) {
+            desactivarTextBox();
+            tablaCliente.setEnabled(false);
+            btnModifica.setEnabled(false);
+        }
+        if(!privilegios.contains(Privilegio.DELETE.toString())) {
+            btnElimina.setEnabled(false);
+        }
+    }
+
+
+    private void desactivarTextBox() {
+        txtNombre.setEnabled(false);
+        txtTelefono.setEnabled(false);
+        txtDireccion.setEnabled(false);
+        txtCorreo.setEnabled(false);
+        fechaCliente.setEnabled(false);
+        txtPedidos.setEnabled(false);
+    }
+
     public Connection conectaDB() {
         Connection cone = null;
         try {
