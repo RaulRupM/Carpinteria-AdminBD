@@ -19,7 +19,7 @@ public class Reporte2 extends javax.swing.JFrame {
 
     private String HOST = "localhost";
     private String PUERTO = "5432";
-    private String DB = "Carpinteria02";
+    private String DB = "Carpinteria";
     private String USER = "postgres";
     private String PASS = "postgres";
     public String url = "jdbc:postgresql://" + HOST + ":" + PUERTO + "/" + DB;
@@ -98,7 +98,7 @@ public class Reporte2 extends javax.swing.JFrame {
 
         jLabel1.setText("Reporte 2");
 
-        jLabel2.setText("<html>Consulta con una subconsulta para obtener empleados cuyo sueldo es mayor que el promedio </html>");
+        jLabel2.setText("<html>Obtener los empleados cuyo sueldo sea igual o mayor que el promedio de la suma de los sueldos de todos los empleados </html>");
 
         tablaReporte2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -129,11 +129,11 @@ public class Reporte2 extends javax.swing.JFrame {
                             .addGap(168, 168, 168)
                             .addComponent(jLabel1))
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(62, 62, 62)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
                             .addGap(19, 19, 19)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(62, 62, 62)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -142,8 +142,8 @@ public class Reporte2 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(btnConsulta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
