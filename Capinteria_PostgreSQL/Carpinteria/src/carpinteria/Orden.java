@@ -100,9 +100,6 @@ public class Orden extends javax.swing.JFrame {
      * error con los detalles de la excepción.
      * Finalmente, el método llama a llenarTablaOrden() para actualizar la tabla con
      * los datos actualizados.
-     * 
-     * @throws PSQLException si se produce un error específico de PostgreSQL.
-     * @throws SQLException  si se produce un error de acceso a la base de datos.
      */
     public void insertarOrden() {
         try {
@@ -137,9 +134,6 @@ public class Orden extends javax.swing.JFrame {
      * error con los detalles de la excepción.
      * Finalmente, el método llama a llenarTablaOrden() para actualizar la tabla con
      * los datos actualizados.
-     *
-     * @throws PSQLException si se produce un error específico de PostgreSQL
-     * @throws SQLException  si se produce un error de acceso a la base de datos
      */
     public void modificarOrden() {
         try {
@@ -172,9 +166,6 @@ public class Orden extends javax.swing.JFrame {
      * error con los detalles de la excepción.
      * Finalmente, el método llama a llenarTablaOrden() para actualizar la tabla con
      * los datos actualizados.
-     *
-     * @throws PSQLException si se produce un error específico de PostgreSQL
-     * @throws SQLException  si se produce un error de acceso a la base de datos
      */
     public void eliminarOrden() {
         try {
